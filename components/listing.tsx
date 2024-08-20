@@ -36,6 +36,6 @@ export default async function Listing() {
                     <ListingCard key={listing.id} listing={listing} />
                 ))}
             </div>
-        <div/>
+        </div>
     )
 }
