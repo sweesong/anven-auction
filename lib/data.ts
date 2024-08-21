@@ -20,6 +20,8 @@ export async function fetchAuctionListing() {
       
         noStore();
 
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+
         const data = await sql<AuctionListing>`SELECT 
             id,title,auction_date,city,address,reserve_price,estimate_price,size,type,tenure,image_url  
         FROM tbl_listing ORDER BY auction_date ASC`;

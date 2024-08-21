@@ -7,8 +7,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from "./select";
-import { ArrowUpIcon } from "lucide-react";
-
 
 export default async function Listing() {
 
