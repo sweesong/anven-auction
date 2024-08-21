@@ -14,10 +14,12 @@ export default async function Listing() {
 
     const listings = await fetchAuctionListing();
 
+    const totalListings= listings.length.toString();
+
     return (
         <div>
             <div className="flex flex-row justify-between items-center pt-2 pb-5">
-                <div>Showing 1-9 of 13 results</div>
+                <div>Display 1-{totalListings} of {totalListings} results</div>
                 <div className="w-[180px]">
                     <Select>
                         <SelectTrigger className="w-[180px]">
