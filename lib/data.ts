@@ -1,7 +1,7 @@
 'use server'
 
 import { sql } from '@vercel/postgres';
-import { revalidatePath } from 'next/cache';
+import { unstable_noStore as noStore } from 'next/cache';
 
 import {
   CustomerField,
@@ -15,8 +15,9 @@ import {
 import { formatCurrency } from './utils';
 
 export async function fetchAuctionListing() {
+
     try {
-        revalidatePath('/');
+        noStore();
 
         const data = await sql<AuctionListing>`SELECT 
             id,title,auction_date,city,address,reserve_price,estimate_price,size,type,tenure,image_url  
