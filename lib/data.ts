@@ -16,14 +16,13 @@ import { formatCurrency } from './utils';
 
 export async function fetchAuctionListing() {
     try {
+        revalidatePath('/');
 
         const data = await sql<AuctionListing>`SELECT 
             id,title,auction_date,city,address,reserve_price,estimate_price,size,type,tenure,image_url  
         FROM tbl_listing ORDER BY auction_date ASC`;
         
         console.log("data returned: " + data.rows.length);
-
-        //revalidatePath('/');
 
         return data.rows;
       } catch (error) {
