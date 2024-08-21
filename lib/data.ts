@@ -23,8 +23,9 @@ export async function fetchAuctionListing() {
         
         console.log("data returned: " + data.rows.length);
 
+        revalidatePath('/')
+
         return data.rows;
-        
       } catch (error) {
         console.error('Database Error:', error);
         throw new Error('Failed to fetch auction listing data.');

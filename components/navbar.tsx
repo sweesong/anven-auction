@@ -85,7 +85,7 @@ export const Navbar = () => {
             isExternal
             as={Link}
             className="text-sm font-normal text-default-600 bg-default-100"
-            href={siteConfig.links.sponsor}
+            href="tel:+60122412818"
             startContent={<PhoneIcon className="text-green-600" />}
             variant="flat"
           >
@@ -99,7 +99,7 @@ export const Navbar = () => {
             isExternal
             as={Link}
             className="text-sm font-normal text-default-600 bg-default-100"
-            href={siteConfig.links.sponsor}
+            href="tel:+60122412818"
             startContent={<PhoneIcon className="text-green-600" />}
             variant="flat"
           >
