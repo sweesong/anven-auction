@@ -17,6 +17,7 @@ import { formatCurrency } from './utils';
 export async function fetchAuctionListing() {
 
     try {
+      
         noStore();
 
         const data = await sql<AuctionListing>`SELECT 
