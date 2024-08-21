@@ -58,7 +58,7 @@ export const Navbar = () => {
             <p className="font-bold text-inherit">ANVEN AUCTION</p>
           </NextLink>
         </NavbarBrand>
-        <ul className="lg:flex gap-4 justify-start ml-2">
+        <ul className="hidden md:flex gap-4 justify-start ml-2">
           {siteConfig.navItems.map((item) => (
             <NavbarItem key={item.href}>
               <NextLink
@@ -77,7 +77,7 @@ export const Navbar = () => {
       </NavbarContent>
 
       <NavbarContent
-        className="sm:flex basis-1/5 sm:basis-full"
+        className="hidden sm:flex basis-1/5 sm:basis-full"
         justify="end"
       >
         <NavbarItem className="md:flex">
@@ -93,6 +93,41 @@ export const Navbar = () => {
           </Button>
         </NavbarItem>
       </NavbarContent>
+
+      <NavbarContent className="sm:hidden basis-1 pl-4 gap-5" justify="end">
+        <Button
+            isExternal
+            as={Link}
+            className="text-sm font-normal text-default-600 bg-default-100"
+            href={siteConfig.links.sponsor}
+            startContent={<PhoneIcon className="text-green-600" />}
+            variant="flat"
+          >
+          </Button>
+        <NavbarMenuToggle />
+      </NavbarContent>
+
+      <NavbarMenu>
+        <div className="mx-4 mt-2 flex flex-col gap-2">
+          {siteConfig.navMenuItems.map((item, index) => (
+            <NavbarMenuItem key={`${item}-${index}`}>
+              <Link
+                color={
+                  index === 2
+                    ? "primary"
+                    : index === siteConfig.navMenuItems.length - 1
+                      ? "danger"
+                      : "foreground"
+                }
+                href={`${item.href}`}
+                size="lg"
+              >
+                {item.label}
+              </Link>
+            </NavbarMenuItem>
+          ))}
+        </div>
+      </NavbarMenu>
     </NextUINavbar>
   );
 };
