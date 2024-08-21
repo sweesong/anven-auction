@@ -23,7 +23,7 @@ export async function fetchAuctionListing() {
         
         console.log("data returned: " + data.rows.length);
 
-        revalidatePath('/');
+        //revalidatePath('/');
 
         return data.rows;
       } catch (error) {
