@@ -2,19 +2,24 @@
 
 import {
   Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./select";
+  SelectItem
+} from "@nextui-org/select";
 
 import { SearchIcon } from "./icons";
 import { Input } from "@nextui-org/input";
 import { Slider } from "@nextui-org/slider";
 import { Button } from "@nextui-org/button";
 import { Accordion, AccordionItem } from "@nextui-org/accordion";
+import { Key, useState } from "react";
+import { select } from "@nextui-org/theme";
+import { SharedSelection } from "@nextui-org/system";
 
 export default function SearchBar() {
+
+  const [searchQuery, setSearchQuery] = useState(""); //Default to empty string
+  //const [propertyType, setPropertyType] = useState<Set<Key> | "all" | undefined>(new Set(["00"])); // Default to All Type
+  const [state, setState] = useState<SharedSelection>(new Set(["All"]));
+  const [selectedKeys, setSelectedKeys] = useState<SharedSelection>(new Set(["00"]));
 
   const searchInput = (
     <Input
@@ -29,43 +34,120 @@ export default function SearchBar() {
         <SearchIcon className="text-base text-default-400 pointer-events-none flex-shrink-0" />
       }
       type="search"
+      value={searchQuery}
+      onChange={(e) => setSearchQuery(e.target.value)}
     />
   );
 
-  return (
+  const handlePropertyTypeChange = (keys: SharedSelection) => {
+    const selectedKeysSet = new Set(keys);
+    const keysArray = Array.from(keys);
+    
+    if(Array.from(keys).length==0){
+      setSelectedKeys(new Set(["00"]));
+    }else if(Array.from(keys).length==1 && keysArray[0]=="00"){
+      setSelectedKeys(new Set(["00"]));
+    }else if(Array.from(keys).length>1 && keysArray[keysArray.length - 1]=="00"){
+      setSelectedKeys(new Set(["00"]));
+    }else if(Array.from(keys).length>1 && keysArray[0]=="00"){
+      selectedKeysSet.delete("00")
+      setSelectedKeys(selectedKeysSet);
+    }else if(Array.from(keys).length==7 && !selectedKeysSet.has("00")){
+      setSelectedKeys(new Set(["00"]));
+    }else{
+      setSelectedKeys(selectedKeysSet);
+    }
+  };
 
+  return (
     <Accordion variant="shadow" isCompact>
       <AccordionItem key="1" aria-label="Search Criteria" subtitle="Press to expand" title="Search Criteria">
         <div className="flex flex-col gap-10 pb-5">
-          <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex flex-col lg:flex-row gap-4">
             <div className="basis-1/2 w-full">
               {searchInput}
             </div>
             <div className="basis-1/4">
-              <Select>
+              <Select 
+                description="you may select more than 1 type" 
+                placeholder="Select Property Type" 
+                className="lg:max-w-xs" 
+                selectionMode="multiple"
+                selectedKeys={selectedKeys}
+                onSelectionChange={handlePropertyTypeChange}
+                >
+                  <SelectItem key="00">All Type</SelectItem>
+                  <SelectItem key="01">Apartment/Flat/Condo/SOHO</SelectItem>
+                  <SelectItem key="02">Factory/Warehouse</SelectItem>
+                  <SelectItem key="03">Hotel/Resott/Clubhouse</SelectItem>
+                  <SelectItem key="04">Land</SelectItem>
+                  <SelectItem key="05">Semi D/Bungalow/Villa</SelectItem>
+                  <SelectItem key="06">Shop/Shop Office/Retail Space/Office</SelectItem>
+                  <SelectItem key="07">Terrace/Townhouse/Link</SelectItem>
+              </Select>
+              {/* <Select value={propertyType} onValueChange={(value) => setPropertyType(value)}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select Property Type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Type</SelectItem>
-                  <SelectItem value="landed">Terrace</SelectItem>
-                  <SelectItem value="condo">Condominium</SelectItem>
-                  <SelectItem value="bungalow">Bungalow</SelectItem>
+                  <SelectItem value="00">All Type</SelectItem>
+                  <SelectItem value="01">Apartment/Flat/Condo/SOHO</SelectItem>
+                  <SelectItem value="02">Factory/Warehouse</SelectItem>
+                  <SelectItem value="03">Hotel/Resott/Clubhouse</SelectItem>
+                  <SelectItem value="04">Land</SelectItem>
+                  <SelectItem value="05">Semi D/Bungalow/Villa</SelectItem>
+                  <SelectItem value="06">Shop/Shop Office/Retail Space/Office</SelectItem>
+                  <SelectItem value="07">Terrace/Townhouse/Link</SelectItem>
                 </SelectContent>
-              </Select>
+              </Select> */}
             </div>
             <div className="basis-1/4">
-              <Select>
+              <Select 
+                placeholder="Select State" 
+                className="lg:max-w-xs"
+                selectedKeys={state}
+                onSelectionChange={setState}
+              >
+                  <SelectItem key="All">All State</SelectItem>
+                  <SelectItem key="Johor">Johor</SelectItem>
+                  <SelectItem key="Kedah">Kedah</SelectItem>
+                  <SelectItem key="Kelantan">Kelantan</SelectItem>
+                  <SelectItem key="Kuala Lumpur">Kuala Lumpur</SelectItem>
+                  <SelectItem key="Labuan">Labuan</SelectItem>
+                  <SelectItem key="Melaka">Melaka</SelectItem>
+                  <SelectItem key="Negeri Sembilan">Negeri Sembilan</SelectItem>
+                  <SelectItem key="Pahang">Pahang</SelectItem>
+                  <SelectItem key="Perak">Perak</SelectItem>
+                  <SelectItem key="Pulau Pinang">Pulau Pinang</SelectItem>
+                  <SelectItem key="Putrajaya">Putrajaya</SelectItem>
+                  <SelectItem key="Sabah">Sabah</SelectItem>
+                  <SelectItem key="Sarawak">Sarawak</SelectItem>
+                  <SelectItem key="Selangor">Selangor</SelectItem>
+                  <SelectItem key="Terengganu">Terengganu</SelectItem>
+                </Select>
+              {/* <Select value={state} onValueChange={(value) => setState(value)}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select State" />
+                  <SelectValue placeholder="Select State" defaultValue="All"/>
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All State</SelectItem>
-                  <SelectItem value="selangor">Selangor</SelectItem>
-                  <SelectItem value="penang">Penang</SelectItem>
-                  <SelectItem value="johor">Johor</SelectItem>
+                  <SelectItem value="All">All State</SelectItem>
+                  <SelectItem value="Johor">Johor</SelectItem>
+                  <SelectItem value="Kedah">Kedah</SelectItem>
+                  <SelectItem value="Kelantan">Kelantan</SelectItem>
+                  <SelectItem value="Kuala Lumpur">Kuala Lumpur</SelectItem>
+                  <SelectItem value="Labuan">Labuan</SelectItem>
+                  <SelectItem value="Melaka">Melaka</SelectItem>
+                  <SelectItem value="Negeri Sembilan">Negeri Sembilan</SelectItem>
+                  <SelectItem value="Pahang">Pahang</SelectItem>
+                  <SelectItem value="Perak">Perak</SelectItem>
+                  <SelectItem value="Pulau Pinang">Pulau Pinang</SelectItem>
+                  <SelectItem value="Putrajaya">Putrajaya</SelectItem>
+                  <SelectItem value="Sabah">Sabah</SelectItem>
+                  <SelectItem value="Sarawak">Sarawak</SelectItem>
+                  <SelectItem value="Selangor">Selangor</SelectItem>
+                  <SelectItem value="Terengganu">Terengganu</SelectItem>
                 </SelectContent>
-              </Select>
+              </Select> */}
             </div>
           </div>
 
