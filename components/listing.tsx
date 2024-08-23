@@ -27,7 +27,7 @@ export default function Listing({ auctionListings, totalListings, pageSize }: Au
     const sortedListings = useMemo(() => {
         return [...auctionListings].sort((a, b) => {
             if (sort === 'newest') return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-            if (sort === 'recent_auction') return new Date(b.auction_date).getTime() - new Date(a.auction_date).getTime();
+            if (sort === 'recent_auction') return new Date(a.auction_date).getTime() - new Date(b.auction_date).getTime();
             if (sort === 'price_asc') return a.reserve_price - b.reserve_price;
             if (sort === 'price_desc') return b.reserve_price - a.reserve_price;
             return 0;
@@ -44,12 +44,11 @@ export default function Listing({ auctionListings, totalListings, pageSize }: Au
     const handleSortChange = (value: string) => {
         setSort(value);
         setCurrentPage(1); // Reset to first page when sorting changes
-        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 100, behavior: 'smooth' });
     };
 
     // Calculate the displayed range

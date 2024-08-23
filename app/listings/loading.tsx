@@ -34,7 +34,8 @@ export default function Loading() {
                                 <SelectValue placeholder="Sort By" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="date_desc">Closest Date</SelectItem>
+                                <SelectItem value="newest">Newest</SelectItem>
+                                <SelectItem value="recent_auction">Recent Auction</SelectItem>
                                 <SelectItem value="price_desc">Highest Price</SelectItem>
                                 <SelectItem value="price_asc">Lowest Price</SelectItem>
                             </SelectContent>
