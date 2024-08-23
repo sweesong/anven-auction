@@ -52,10 +52,14 @@ export default function Listing({ auctionListings, totalListings, pageSize }: Au
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
+    // Calculate the displayed range
+    const startIndex = (currentPage - 1) * pageSize + 1;
+    const endIndex = Math.min(currentPage * pageSize, totalListings);
+
     return (
         <div>
             <div className="flex flex-row justify-between items-center pt-2 pb-5">
-                <div>Display 1-{totalListings} of {totalListings.toString()} results</div>
+                <div>Displaying {startIndex}-{endIndex} of {totalListings} results</div>
                 <div className="w-[180px]">
                     <Select
                         onValueChange={handleSortChange}
