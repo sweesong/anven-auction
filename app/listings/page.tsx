@@ -7,9 +7,7 @@ export default async function ListingPage() {
 
   const pageSize = 20; // Number of items per page
   const { totalListings, auctionListings } = await getPaginatedListings(1, pageSize); // Fetch the first page
-
-  console.log("refresh data");
-
+  
   return (
     <>
     <SearchBar />

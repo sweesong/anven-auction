@@ -26,7 +26,6 @@ export default function Listing({ auctionListings, totalListings, pageSize }: Au
 
         // Memoize sorted listings
         const sortedListings = useMemo(() => {
-            console.log(`Sorting listings with sort value: ${sort}`);
             return [...auctionListings].sort((a, b) => {
                 if (sort === 'newest') return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
                 if (sort === 'recent_auction') return new Date(b.auction_date).getTime() - new Date(a.auction_date).getTime();
@@ -38,26 +37,18 @@ export default function Listing({ auctionListings, totalListings, pageSize }: Au
 
         // Memoize paginated listings
         const paginatedListings = useMemo(() => {
-            console.log(`currentPage: ${currentPage}`);
-            console.log(`pageSize: ${pageSize}`);
             const startIndex = (currentPage - 1) * pageSize;
             const endIndex = startIndex + pageSize;
-            console.log(`startIndex: ${startIndex}`);
-            console.log(`endIndex: ${endIndex}`);
-            console.log(sortedListings.slice(startIndex, endIndex))
             return sortedListings.slice(startIndex, endIndex);
         }, [currentPage, sortedListings, pageSize]);
 
         const handleSortChange = (value: string) => {
-            console.log(`Sorting changed to: ${value}`);
             setSort(value);
             setCurrentPage(1); // Reset to first page when sorting changes
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
         const handlePageChange = (page: number) => {
-            console.log(`Page changed to: ${page}`);
-            console.log("handlePageChange")
             setCurrentPage(page);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
