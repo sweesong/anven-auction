@@ -10,7 +10,7 @@ import {
 } from "./select";
 import { useMemo, useState } from 'react';
 import { Pagination } from "@nextui-org/pagination";
-import { auction_listings } from "@/prisma/generated/client";
+import { auction_listings } from ".prisma/client";
 
 type AuctionListingPageProps = {
     auctionListings: auction_listings[];
