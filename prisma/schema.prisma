@@ -1,0 +1,28 @@
+// schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  connection_limit = 30
+}
+
+model auction_listings {
+    id              Int         @id @default(autoincrement())
+    title           String
+    auction_date    DateTime
+	city            String
+	address         String
+	reserve_price   Float
+    estimate_price  Float?
+	size            Float       @map("auction_size")
+	type            String      @map("auction_type")
+	tenure          String
+	image_url       String?
+    createdAt       DateTime    @default(now())
+    updatedAt       DateTime?
+}

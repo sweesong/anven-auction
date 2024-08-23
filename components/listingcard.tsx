@@ -8,9 +8,10 @@ import { Link } from "@nextui-org/link";
 import { AuctionListing } from "../lib/definitions";
 import { formatDateToStr } from "@/lib/utils";
 import { Tooltip } from "@nextui-org/tooltip";
+import { auction_listings } from "@prisma/client";
 
 interface ListingCardProps {
-    listing: AuctionListing;
+    listing: auction_listings
 }
 
 export default function ListingCard({ listing }: ListingCardProps) {
@@ -28,7 +29,7 @@ export default function ListingCard({ listing }: ListingCardProps) {
                 removeWrapper
                 alt="Card background"
                 className="z-0 w-full h-60 object-cover"
-                src={listing.image_url}
+                src={listing.image_url==null?"placeholder.png":listing.image_url}
             />
             <CardBody>
                 <div className="flex flex-col">
