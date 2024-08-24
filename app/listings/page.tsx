@@ -2,6 +2,7 @@ import Listing from "@/components/listing";
 import SearchBar from "@/components/searchbar";
 import { Spacer } from "@nextui-org/spacer";
 import { getPaginatedListings } from '../../lib/prisma';
+import { Suspense } from "react";
 
 interface ListingPageProps {
   searchParams: {
@@ -23,7 +24,9 @@ export default async function ListingPage({ searchParams }: ListingPageProps) {
   
   return (
     <>
-    <SearchBar />
+    <Suspense fallback={<div>Loading search bar...</div>}>
+      <SearchBar />
+    </Suspense>
     <Spacer y={8} />
     <Listing  auctionListings={auctionListings} totalListings={totalListings} pageSize={pageSize} />
     </>
