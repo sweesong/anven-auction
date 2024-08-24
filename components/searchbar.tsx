@@ -10,9 +10,9 @@ import { Input } from "@nextui-org/input";
 import { Slider } from "@nextui-org/slider";
 import { Button } from "@nextui-org/button";
 import { Accordion, AccordionItem } from "@nextui-org/accordion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SharedSelection } from "@nextui-org/system";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface SearchBarProps {
   initialParams: {
@@ -24,17 +24,39 @@ interface SearchBarProps {
 
 export default function SearchBar() {
 
-  const [searchQuery, setSearchQuery] = useState(""); //Default to empty string
-  //const [propertyType, setPropertyType] = useState<Set<Key> | "all" | undefined>(new Set(["00"])); // Default to All Type
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const [searchQuery, setSearchQuery] = useState("");
   const [state, setState] = useState<SharedSelection>(new Set(["All"]));
   const [selectedKeys, setSelectedKeys] = useState<SharedSelection>(new Set(["00"]));
 
-  const router = useRouter();
+  useEffect(() => {
+    // Extract query parameters from the URL
+    const querySearch = searchParams.get('searchQuery') || '';
+    const queryType = searchParams.get('propertyType') || '';
+    const queryState = searchParams.get('state') || 'All';
+
+    // Update state based on query parameters
+    setSearchQuery(querySearch);
+    setSelectedKeys(new Set(queryType.split(',').length ? queryType.split(',') : ["00"]));
+    setState(new Set([queryState]));
+  }, [searchParams]);
+
 
   const handleSearch = () => {
-  router.push(`/listings?searchQuery=A&propertyType=A&state=A`);
-  }
 
+    const typeQuery = Array.from(selectedKeys).join(',');
+    const stateQuery = Array.from(state).join(',');
+    
+    const encodedSearchQuery = encodeURIComponent(searchQuery);
+    const encodedTypeQuery = encodeURIComponent(typeQuery);
+    const encodedStateQuery = encodeURIComponent(stateQuery);
+    
+    const url = `/listings?searchQuery=${encodedSearchQuery}&propertyType=${encodedTypeQuery}&state=${encodedStateQuery}`;
+
+    router.push(url);
+  }
 
   const searchInput = (
     <Input
@@ -75,7 +97,7 @@ export default function SearchBar() {
   };
 
   return (
-    <Accordion variant="shadow" isCompact>
+    <Accordion variant="shadow" defaultExpandedKeys="1" isCompact>
       <AccordionItem key="1" aria-label="Search Criteria" subtitle="Press to expand" title="Search Criteria">
         <div className="flex flex-col gap-10 pb-5">
           <div className="flex flex-col lg:flex-row gap-4">
