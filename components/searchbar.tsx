@@ -10,9 +10,17 @@ import { Input } from "@nextui-org/input";
 import { Slider } from "@nextui-org/slider";
 import { Button } from "@nextui-org/button";
 import { Accordion, AccordionItem } from "@nextui-org/accordion";
-import { Key, useState } from "react";
-import { select } from "@nextui-org/theme";
+import { useState } from "react";
 import { SharedSelection } from "@nextui-org/system";
+import { useRouter } from "next/navigation";
+
+interface SearchBarProps {
+  initialParams: {
+    searchQuery?: string;
+    propertyType?: string;
+    state?: string;
+  };
+}
 
 export default function SearchBar() {
 
@@ -20,6 +28,13 @@ export default function SearchBar() {
   //const [propertyType, setPropertyType] = useState<Set<Key> | "all" | undefined>(new Set(["00"])); // Default to All Type
   const [state, setState] = useState<SharedSelection>(new Set(["All"]));
   const [selectedKeys, setSelectedKeys] = useState<SharedSelection>(new Set(["00"]));
+
+  const router = useRouter();
+
+  const handleSearch = () => {
+  router.push(`/listings?searchQuery=A&propertyType=A&state=A`);
+  }
+
 
   const searchInput = (
     <Input
@@ -171,7 +186,7 @@ export default function SearchBar() {
               defaultValue={[300, 10000]}
               className="max-w-md basis-5/5 gap-3"
             />
-            <Button className="bg-blue-500 text-white" fullWidth={true} endContent={<SearchIcon />}>
+            <Button onPress={handleSearch} className="bg-blue-500 text-white" fullWidth={true} endContent={<SearchIcon />}>
               Search
             </Button>
           </div>

@@ -11,7 +11,15 @@ if (process.env.NODE_ENV === 'production') {
   prisma = global.prisma;
 }
 
-export async function getPaginatedListings(page: number, pageSize: number) {  
+export async function getPaginatedListings(
+  page: number, 
+  pageSize: number,
+  searchQuery: string,
+  propertyType: string,
+  state: string) {  
+
+    console.log(searchQuery);
+
     const [totalListings, auctionListings] = await Promise.all([
       prisma.auction_listings.count(), // Get the total count of listings
       prisma.auction_listings.findMany({
