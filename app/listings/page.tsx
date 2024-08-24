@@ -26,9 +26,9 @@ export default async function ListingPage({ searchParams }: ListingPageProps) {
     <>
     <Suspense fallback={<div>Loading search bar...</div>}>
       <SearchBar />
+      <Spacer y={8} />
+      <Listing  auctionListings={auctionListings} totalListings={totalListings} pageSize={pageSize} />
     </Suspense>
-    <Spacer y={8} />
-    <Listing  auctionListings={auctionListings} totalListings={totalListings} pageSize={pageSize} />
     </>
   );
 }
