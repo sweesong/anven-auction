@@ -34,7 +34,7 @@ export default function SearchBar() {
   useEffect(() => {
     // Extract query parameters from the URL
     const querySearch = searchParams.get('searchQuery') || '';
-    const queryType = searchParams.get('propertyType') || '';
+    const queryType = searchParams.get('propertyType') || '00';
     const queryState = searchParams.get('state') || 'All';
 
     // Update state based on query parameters
