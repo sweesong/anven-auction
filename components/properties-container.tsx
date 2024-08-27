@@ -24,7 +24,7 @@ export default async function PropertiesContainer({
         return (
             <div className="flex w-full items-center justify-center gap-2 pt-10">
             <SearchIcon />
-            <span>We're sorry. We couldn't find any results based on your criteria.</span>
+            <span>{"We're sorry. We couldn't find any results based on your criteria."}</span>
             </div>
         )
     }
