@@ -18,6 +18,8 @@ export default function PropertyCard(property: PropertyCardProps) {
     whatsappString = whatsappString.replace("[id]","["+property.id+"]");
     whatsappString = whatsappString.replace("[title]","["+property.title+"]");
     whatsappString = whatsappString.replace("[address]","["+property.address+"]");
+    whatsappString = whatsappString.replace("[auctiondate]","["+formatDateToStr(property.auction_date)+"]");
+    whatsappString = whatsappString.replace("[price]","[RM "+property.reserve_price.toLocaleString("en-US")+"]");
 
     whatsappString = whatsappString.replace(/ /g,"%20");
 
