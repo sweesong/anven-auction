@@ -8,11 +8,16 @@ import { Link } from "@nextui-org/link";
 import { formatDateToStr } from "@/lib/utils";
 import { Tooltip } from "@nextui-org/tooltip";
 import { PropertyCardProps } from "@/lib/types";
+import { contactConfig } from "@/config/contact";
 
 
 export default function PropertyCard(property: PropertyCardProps) {
 
-    var whatsappString: string = "https://api.whatsapp.com/send?phone=60122412818&text=[from website] Interested on this ->" + property.title;
+    var whatsappString: string = contactConfig.whatsapp_linkmsg;
+
+    whatsappString = whatsappString.replace("[id]","["+property.id+"]");
+    whatsappString = whatsappString.replace("[title]","["+property.title+"]");
+    whatsappString = whatsappString.replace("[address]","["+property.address+"]");
 
     whatsappString = whatsappString.replace(/ /g,"%20");
 

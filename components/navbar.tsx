@@ -26,6 +26,7 @@ import {
   Logo,
   PhoneIcon,
 } from "@/lib/icons";
+import { contactConfig } from "@/config/contact";
 
 export const Navbar = () => {
   const searchInput = (
@@ -48,6 +49,8 @@ export const Navbar = () => {
       type="search"
     />
   );
+
+  const contactNo= "tel:" + contactConfig.contactno;
 
   return (
     <NextUINavbar maxWidth="xl" position="sticky">
@@ -99,7 +102,7 @@ export const Navbar = () => {
             isExternal
             as={Link}
             className="text-sm font-normal text-default-600 bg-default-100"
-            href="tel:+60122412818"
+            href={contactNo}
             startContent={<PhoneIcon className="text-green-600" />}
             variant="flat"
           >

@@ -7,7 +7,8 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "eslint . --ext .ts,.tsx -c .eslintrc.json --fix",
-		"postinstall": "prisma generate"
+		"postinstall": "prisma generate",
+		"seed": "node prisma/seed.js"
 	},
 	"dependencies": {
 		"@nextui-org/accordion": "^2.0.38",
@@ -69,6 +70,7 @@
 		"prisma": "^5.18.0",
 		"tailwind-variants": "0.1.20",
 		"tailwindcss": "3.4.3",
+		"ts-node": "^10.9.2",
 		"typescript": "^5.5.4"
 	}
 }

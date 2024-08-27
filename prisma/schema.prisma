@@ -15,14 +15,14 @@ model properties {
     id              Int         @id @default(autoincrement())
     title           String
     auction_date    DateTime
-	city            String
-	address         String
-	reserve_price   Float
+	  city            String
+	  address         String
+	  reserve_price   Float
     estimate_price  Float?
-	size            Float       @map("auction_size")
-	type            String      @map("auction_type")
-	tenure          String
-	image_url       String?
+	  size            Float       @map("property_size")
+	  type            String      @map("property_type")
+	  tenure          String
+	  image_url       String?
     createdAt       DateTime    @default(now())
     updatedAt       DateTime?
 }
