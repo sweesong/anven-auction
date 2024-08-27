@@ -6,19 +6,35 @@ export default async function PropertiesContainer({
     searchQuery,
     propertyType,
     state,
+    minPrice,
+    maxPrice,
+    minSize,
+    maxSize,
     currentPage
 }: {
     searchQuery: string;
     propertyType: string;
     state: string;
+    minPrice: number;
+    maxPrice: number;
+    minSize: number;
+    maxSize: number;
     currentPage?: number;
 }) {
 
     const pageSize = 20; // Number of items per page
 
-    const { totalProperties, properties } = await fetchProperties(1, pageSize, searchQuery,
+    const { totalProperties, properties } = await fetchProperties(
+        1, 
+        pageSize, 
+        searchQuery,
         propertyType,
-        state);
+        state,
+        minPrice,
+        maxPrice,
+        minSize,
+        maxSize,
+    );
     
     if(totalProperties===0){
         return (

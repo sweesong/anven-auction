@@ -37,7 +37,7 @@ export default function PropertyCard(property: PropertyCardProps) {
                             <div className="flex flex-col text-gray-800 font-semibold gap-1">
                                 <div className="flex flex-row font-bold text-xl gap-2">
                                     <div className="flex items-center gap-1">
-                                    RM {property.reserve_price.toString()}
+                                    RM {property.reserve_price.toLocaleString("en-US")}
                                     <Tooltip content="Whatsapp Me">
                                         <Link className="text-green-600"
                                                 isExternal

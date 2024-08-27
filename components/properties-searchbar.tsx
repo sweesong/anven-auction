@@ -14,14 +14,6 @@ import { useEffect, useState } from "react";
 import { SharedSelection } from "@nextui-org/system";
 import { useRouter, useSearchParams } from "next/navigation";
 
-interface SearchBarProps {
-  initialParams: {
-    searchQuery?: string;
-    propertyType?: string;
-    state?: string;
-  };
-}
-
 export default function PropertiesSearchBar() {
 
   const searchParams = useSearchParams();
@@ -30,17 +22,25 @@ export default function PropertiesSearchBar() {
   const [searchQuery, setSearchQuery] = useState("");
   const [state, setState] = useState<SharedSelection>(new Set(["All"]));
   const [selectedKeys, setSelectedKeys] = useState<SharedSelection>(new Set(["00"]));
+  const [priceRange, setPriceRange] = useState([0, 10000000]);
+  const [sizeRange, setSizeRange] = useState([0, 50000]);
 
   useEffect(() => {
     // Extract query parameters from the URL
     const querySearch = searchParams.get('searchQuery') || '';
     const queryType = searchParams.get('propertyType') || '00';
     const queryState = searchParams.get('state') || 'All';
+    const minPrice = parseInt(searchParams.get('minPrice') || '0', 10);
+    const maxPrice = parseInt(searchParams.get('maxPrice') || '10000000', 10);
+    const minSize = parseInt(searchParams.get('minSize') || '0', 10);
+    const maxSize = parseInt(searchParams.get('maxSize') || '50000', 10);
 
     // Update state based on query parameters
     setSearchQuery(querySearch);
     setSelectedKeys(new Set(queryType.split(',').length ? queryType.split(',') : ["00"]));
     setState(new Set([queryState]));
+    setPriceRange([minPrice, maxPrice]);
+    setSizeRange([minSize, maxSize]);
   }, [searchParams]);
 
 
@@ -52,8 +52,14 @@ export default function PropertiesSearchBar() {
     const encodedSearchQuery = encodeURIComponent(searchQuery);
     const encodedTypeQuery = encodeURIComponent(typeQuery);
     const encodedStateQuery = encodeURIComponent(stateQuery);
+
+    const minPrice = priceRange[0];
+    const maxPrice = priceRange[1];
+
+    const minSize = sizeRange[0];
+    const maxSize = sizeRange[1];
     
-    const url = `/properties?searchQuery=${encodedSearchQuery}&propertyType=${encodedTypeQuery}&state=${encodedStateQuery}`;
+    const url = `/properties?searchQuery=${encodedSearchQuery}&propertyType=${encodedTypeQuery}&state=${encodedStateQuery}&minPrice=${minPrice}&maxPrice=${maxPrice}&minSize=${minSize}&maxSize=${maxSize}`;
 
     router.push(url);
   }
@@ -96,10 +102,18 @@ export default function PropertiesSearchBar() {
     }
   };
 
+  const priceValueChange = (value: any) => {
+    setPriceRange(value);
+  };
+
+  const sizeValueChange = (value: any) => {
+    setSizeRange(value);
+  };
+
   return (
     <Accordion variant="shadow" defaultExpandedKeys="1" isCompact>
       <AccordionItem key="1" aria-label="Search Criteria" subtitle="Press to expand" title="Search Criteria">
-        <div className="flex flex-col gap-10 pb-5">
+        <div className="flex flex-col gap-5 pb-5">
           <div className="flex flex-col lg:flex-row gap-4">
             <div className="basis-1/2 w-full">
               {searchInput}
@@ -151,25 +165,40 @@ export default function PropertiesSearchBar() {
           </div>
 
           <div className="flex flex-col md:flex-row gap-10 px-2 items-center">
+            <div className="flex flex-col items-center md-flex-row w-full">
             <Slider
-              label="Price Range"
+              label="Price Range (RM)"
               size="sm"
-              step={100}
+              step={100000}
               minValue={0}
-              maxValue={5000000}
-              defaultValue={[0, 5000000]}
-              formatOptions={{ style: "currency", currency: "MYR" }}
+              maxValue={10000000}
+              defaultValue={[priceRange[0], priceRange[1]]}
+              showTooltip={true}
+              showOutline={true}
+              formatOptions={{ maximumFractionDigits: 0 }}
+              tooltipValueFormatOptions={{ maximumFractionDigits: 0 }}
               className="max-w-md basis-5/5 gap-3"
+              onChange={priceValueChange}
             />
+            <span className="text-xs text-gray-400">drag both to the max to search for more than 10mil</span>
+            </div>
+            <div className="flex flex-col items-center md-flex-row w-full">
             <Slider
-              label="Area Size (sqft)"
+              label="Area Size (Sqft)"
               size="sm"
-              step={10}
-              minValue={300}
-              maxValue={10000}
-              defaultValue={[300, 10000]}
+              step={250}
+              minValue={0}
+              maxValue={50000}
+              defaultValue={[sizeRange[0], sizeRange[1]]}
+              showTooltip={true}
+              showOutline={true}
+              formatOptions={{ maximumFractionDigits: 0 }}
+              tooltipValueFormatOptions={{ maximumFractionDigits: 0 }}
               className="max-w-md basis-5/5 gap-3"
+              onChange={sizeValueChange}
             />
+            <span className="text-xs text-gray-400">drag both to the max to search for more than 50k</span>
+            </div>
             <Button onPress={handleSearch} className="bg-blue-500 text-white" fullWidth={true} endContent={<SearchIcon />}>
               Search
             </Button>
