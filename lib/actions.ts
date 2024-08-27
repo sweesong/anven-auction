@@ -123,10 +123,10 @@ export async function fetchProperties(
 
   // Query the total count and paginated listings
   const [totalProperties, properties] = await Promise.all([
-    prisma.auction_listings.count({
+    prisma.properties.count({
       where: whereClause
     }),
-    prisma.auction_listings.findMany({
+    prisma.properties.findMany({
       where: whereClause,
       orderBy: {
         createdAt: 'desc',

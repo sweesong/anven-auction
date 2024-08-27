@@ -11,7 +11,7 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
-model auction_listings {
+model properties {
     id              Int         @id @default(autoincrement())
     title           String
     auction_date    DateTime
