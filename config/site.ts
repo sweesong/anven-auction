@@ -5,8 +5,8 @@ export const siteConfig = {
   description: "discover and buy auction properties effortlessly",
   navItems: [
     {
-      label: "Listings",
-      href: "/listings",
+      label: "Properties",
+      href: "/properties",
     },
     {
       label: "Terms & Conditions",
@@ -15,8 +15,8 @@ export const siteConfig = {
   ],
   navMenuItems: [
     {
-      label: "Listings",
-      href: "/listings",
+      label: "Properties",
+      href: "/properties",
     },
     {
       label: "Terms & Conditions",

@@ -1,16 +1,4 @@
-import { Prisma, PrismaClient } from '@prisma/client';
-import { PagesManifest } from 'next/dist/build/webpack/plugins/pages-manifest-plugin';
-
-let prisma: PrismaClient;
-
-if (process.env.NODE_ENV === 'production') {
-  prisma = new PrismaClient();
-} else {
-  if (!global.prisma) {
-    global.prisma = new PrismaClient();
-  }
-  prisma = global.prisma;
-}
+import prisma from "./db";
 
 // Define property type mappings
 const propertyTypeMappings: Record<string, string[]> = {
@@ -24,15 +12,20 @@ const propertyTypeMappings: Record<string, string[]> = {
   // Add other property type mappings here as needed
 };
 
-export async function getPaginatedListings(
+async function delay(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+export async function fetchProperties(
   page: number, 
   pageSize: number,
   searchQuery: string,
   propertyType: string,
   state: string
 ) {
-  console.log(searchQuery);
-
+  await delay(2000); 
+  
   // Calculate offset for pagination
   const skip = (page - 1) * pageSize;
 
@@ -89,7 +82,7 @@ export async function getPaginatedListings(
 
 
   // Query the total count and paginated listings
-  const [totalListings, auctionListings] = await Promise.all([
+  const [totalProperties, properties] = await Promise.all([
     prisma.auction_listings.count({
       where: whereClause
     }),
@@ -101,11 +94,11 @@ export async function getPaginatedListings(
     }),
   ]);
 
-  console.log("totalListings=" + totalListings);
+  console.log("Total Properties Retrieved=" + totalProperties);
 
   return {
-    totalListings,
-    auctionListings,
+    totalProperties,
+    properties,
   };
 }
 

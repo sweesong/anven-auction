@@ -2,18 +2,20 @@
 // It describes the shape of the data, and what data type each property should accept.
 // For simplicity of teaching, we're manually defining these types.
 // However, these types are generated automatically if you're using an ORM such as Prisma.
-export type AuctionListing = {
+export type PropertyCardProps = {
     id: number;
     title: string;
     auction_date: Date;
     city: string;
     address: string;
     reserve_price: number;
-    estimate_price: number;
+    estimate_price: number | null;
     size: number;
     type: string;
     tenure: string;
-    image_url: string;
+    image_url: string | null;
+    createdAt: Date;
+    updatedAt: Date | null;
 }
 
 export type User = {

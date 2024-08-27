@@ -25,7 +25,7 @@ import {
   SearchIcon,
   Logo,
   PhoneIcon,
-} from "@/components/icons";
+} from "@/lib/icons";
 
 export const Navbar = () => {
   const searchInput = (

@@ -1,4 +1,3 @@
-import SearchBar from "@/components/searchbar";
 import React from "react";
 import { Card } from "@nextui-org/card";
 import { Skeleton } from "@nextui-org/skeleton";
@@ -9,22 +8,17 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/select";
-import { Spacer } from "@nextui-org/spacer";
 
-
-
-export default function Loading() {
+export function PropertyListingSkeleton() {
 
     const cardSkeletons = [];
 
     for (let i = 0; i < 10; i++) {
-        cardSkeletons.push(<CardSkeleton key={i}/>);
+        cardSkeletons.push(<CardSkeleton key={i} />);
     }
 
     return (
         <>
-            <SearchBar />
-            <Spacer y={8} />
             <div>
                 <div className="flex flex-row justify-between items-center pt-2 pb-5">
                     <div>Retrieving results...</div>

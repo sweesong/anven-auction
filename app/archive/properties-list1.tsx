@@ -1,6 +1,6 @@
 'use client'
 
-import ListingCard from "./listingcard";
+import PropertyCard from "./property-card";
 import {
     Select,
     SelectContent,
@@ -18,7 +18,7 @@ type AuctionListingPageProps = {
     pageSize: number;
 };
 
-export default function Listing({ auctionListings, totalListings, pageSize }: AuctionListingPageProps) {
+export default function PropertyListing({ auctionListings, totalListings, pageSize }: AuctionListingPageProps) {
 
     const [sort, setSort] = useState<string>('newest');
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -77,7 +77,7 @@ export default function Listing({ auctionListings, totalListings, pageSize }: Au
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-4">
                 {paginatedListings.map(listing => (
-                    <ListingCard key={listing.id} listing={listing} />
+                    <PropertyCard key={listing.id} listing={listing} />
                 ))}
             </div>
             <div className="flex flex-row sm: justify-center md:justify-end">

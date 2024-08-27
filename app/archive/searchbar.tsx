@@ -5,7 +5,7 @@ import {
   SelectItem
 } from "@nextui-org/select";
 
-import { SearchIcon } from "./icons";
+import { SearchIcon } from "../lib/icons";
 import { Input } from "@nextui-org/input";
 import { Slider } from "@nextui-org/slider";
 import { Button } from "@nextui-org/button";
@@ -22,7 +22,7 @@ interface SearchBarProps {
   };
 }
 
-export default function SearchBar() {
+export default function PropertiesSearchBar() {
 
   const searchParams = useSearchParams();
   const router = useRouter();

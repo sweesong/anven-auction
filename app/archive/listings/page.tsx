@@ -1,7 +1,7 @@
-import Listing from "@/components/listing";
-import SearchBar from "@/components/searchbar";
+import PropertyListing from "@/components/properties-list1";
+import PropertiesSearchBar from "@/components/properties-searchbar";
 import { Spacer } from "@nextui-org/spacer";
-import { getPaginatedListings } from '../../lib/prisma';
+import { fetchProperties } from '../../lib/actions';
 
 interface ListingPageProps {
   searchParams: {
@@ -17,15 +17,15 @@ export default async function ListingPage({ searchParams }: ListingPageProps) {
   const { searchQuery = '', propertyType = '', state = 'All' } = searchParams;
 
   const pageSize = 20; // Number of items per page
-  const { totalListings, auctionListings } = await getPaginatedListings(1, pageSize, searchQuery,
+  const { totalProperties, properties } = await fetchProperties(1, pageSize, searchQuery,
     propertyType,
     state); // Fetch the first page
   
   return (
     <>
-      <SearchBar />
+      <PropertiesSearchBar />
       <Spacer y={8} />
-      <Listing  auctionListings={auctionListings} totalListings={totalListings} pageSize={pageSize} />
+      <PropertyListing  auctionListings={properties} totalListings={totalProperties} pageSize={pageSize} />
     </>
   );
 }
