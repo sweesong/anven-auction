@@ -32,7 +32,7 @@ export default function PropertyPage({searchParams = {}} : PropertyPageProps){
     const suspenseKey = `${searchQuery}-${propertyType}-${state}-${currentPage}-${minPrice}-${maxPrice}-${minSize}-${maxSize}`;
 
     return (
-        <>
+        <section>
           <PropertiesSearchBar />
           <Spacer y={8} />
           <Suspense 
@@ -49,6 +49,6 @@ export default function PropertyPage({searchParams = {}} : PropertyPageProps){
                 currentPage={currentPage}
                 />
           </Suspense>
-        </>
+        </section>
       );
 }

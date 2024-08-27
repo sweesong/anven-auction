@@ -1,4 +1,4 @@
-import { subtitle, title } from "@/components/primitives";
+import { title } from "@/components/primitives";
 import { Button } from "@nextui-org/button";
 import { Image } from "@nextui-org/image";
 import { Link } from "@nextui-org/link";
@@ -25,7 +25,7 @@ export default async function Home() {
         src="landing_bg1.png"
       />
       <div className="flex justify-center">
-        <Button as={Link} color="warning" variant="shadow" className="w-[200px]" href="/listings">Browse Auction Listing</Button>
+        <Button as={Link} color="warning" variant="shadow" className="w-[200px]" href="/properties">Browse Auction Listing</Button>
       </div>
     </div>
     </>
