@@ -1,7 +1,7 @@
 import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/card";
 import { Chip } from "@nextui-org/chip";
 import { Divider } from "@nextui-org/divider";
-import { Image } from "@nextui-org/image";
+//import { Image } from "@nextui-org/image";
 import { CalculatorIcon, GavelIcon } from "lucide-react";
 import { WhatsAppIcon } from "../lib/icons";
 import { Link } from "@nextui-org/link";
@@ -9,7 +9,7 @@ import { formatDateToStr } from "@/lib/utils";
 import { Tooltip } from "@nextui-org/tooltip";
 import { PropertyCardProps } from "@/lib/types";
 import { contactConfig } from "@/config/contact";
-
+import { Image } from 'antd';
 
 export function PropertyCardGrid(property: PropertyCardProps) {
 
@@ -29,10 +29,10 @@ export function PropertyCardGrid(property: PropertyCardProps) {
                 <Chip variant="shadow" color="warning">{property.type}</Chip>
             </CardHeader>
             <Image
-                removeWrapper
-                alt="Card background"
+                alt={"image:#"+property.id.toString()}
                 className="z-0 w-full h-60 object-cover"
                 src={property.image_url == null ? "placeholder.png" : property.image_url}
+                width="100%"
             />
             <CardBody>
                 <div className="flex flex-col">
@@ -113,10 +113,9 @@ export function PropertyCardList(property: PropertyCardProps) {
                 <div className="grid grid-cols-12 gap-6 items-center justify-center">
                     <div className="relative col-span-4">
                         <Image
-                            alt="Album cover"
+                            alt={"image:#"+property.id.toString()}
                             className="z-0 object-cover"
                             height={200}
-                            shadow="md"
                             src={property.image_url == null ? "placeholder.png" : property.image_url}
                             width="100%"
                         />
