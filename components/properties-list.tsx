@@ -61,47 +61,51 @@ export default function PropertyListing({ properties, totalProperties, pageSize 
         <div>
             <div className="flex flex-row justify-between items-center pt-2 pb-5">
                 <div>Displaying {startIndex}-{endIndex} of {totalProperties} results</div>
-                <div className="flex flex-row items-center gap-2">
-                <Button 
-                    isIconOnly 
-                    size="sm" 
-                    variant="light" 
-                    aria-label="Like"
-                    onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}>
-                    {
-                       viewMode === 'grid' ? <Tooltip content="Go to List View"><LayoutListIcon color="grey"/></Tooltip> : <Tooltip content="Go to Grid View"><LayoutGridIcon color="grey"/></Tooltip>
-                    }
-                </Button>
-                <div className="w-[180px]">
-                    <Select
-                        onValueChange={handleSortChange}
-                        defaultValue={sort}>
-                        <SelectTrigger className="w-[180px]">
-                            <SelectValue placeholder="Sort By" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="newest">Newest</SelectItem>
-                            <SelectItem value="recent_auction">Recent Auction</SelectItem>
-                            <SelectItem value="price_desc">Highest Price</SelectItem>
-                            <SelectItem value="price_asc">Lowest Price</SelectItem>
-                        </SelectContent>
-                    </Select>
-                </div>
+                <div className="flex flex-row items-center gap-2 ">
+                    <div className="hidden sm:flex">
+                        <Button
+                            isIconOnly
+                            size="sm"
+                            variant="light"
+                            aria-label="Like"
+                            onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}>
+                            {
+
+                                viewMode === 'grid' ? <Tooltip content="Go to List View"><LayoutListIcon color="grey" /></Tooltip> : <Tooltip content="Go to Grid View"><LayoutGridIcon color="grey" /></Tooltip>
+
+                            }
+                        </Button>
+                    </div>
+                    <div className="w-[180px]">
+                        <Select
+                            onValueChange={handleSortChange}
+                            defaultValue={sort}>
+                            <SelectTrigger className="w-[180px]">
+                                <SelectValue placeholder="Sort By" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="newest">Newest</SelectItem>
+                                <SelectItem value="recent_auction">Recent Auction</SelectItem>
+                                <SelectItem value="price_desc">Highest Price</SelectItem>
+                                <SelectItem value="price_asc">Lowest Price</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
                 </div>
             </div>
             {
-            viewMode === 'grid' ?
-            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-                {paginatedProperties.map(property => (
-                    <PropertyCardGrid key={property.id} {...property} />
-                ))}
-            </div>
-            :
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-                {paginatedProperties.map(property => (
-                    <PropertyCardList key={property.id} {...property} />
-                ))}
-            </div>
+                viewMode === 'grid' ?
+                    <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+                        {paginatedProperties.map(property => (
+                            <PropertyCardGrid key={property.id} {...property} />
+                        ))}
+                    </div>
+                    :
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+                        {paginatedProperties.map(property => (
+                            <PropertyCardList key={property.id} {...property} />
+                        ))}
+                    </div>
             }
             <div className="flex flex-row sm: justify-center md:justify-end">
                 <Pagination
