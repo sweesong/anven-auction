@@ -9,7 +9,7 @@ import { formatDateToStr } from "@/lib/utils";
 import { Tooltip } from "@nextui-org/tooltip";
 import { PropertyCardProps } from "@/lib/types";
 import { contactConfig } from "@/config/contact";
-import { Image } from 'antd';
+import  Image from 'antd/es/image';
 
 export function PropertyCardGrid(property: PropertyCardProps) {
 
