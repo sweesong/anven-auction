@@ -1,6 +1,6 @@
 'use client'
 
-import PropertyCard from "./property-card";
+import { PropertyCardGrid, PropertyCardList } from "./property-card";
 import {
     Select,
     SelectContent,
@@ -11,6 +11,9 @@ import {
 import { useMemo, useState } from 'react';
 import { Pagination } from "@nextui-org/pagination";
 import { PropertyCardProps } from "@/lib/types";
+import { AlignJustifyIcon, Grid2x2Check, Grid2x2CheckIcon, Grid2X2Icon, LayoutGridIcon, LayoutListIcon, ListIcon } from "lucide-react";
+import { Button } from "@nextui-org/button";
+import { Tooltip } from "@nextui-org/tooltip";
 
 type PropertiesListProps = {
     properties: PropertyCardProps[];
@@ -21,6 +24,7 @@ type PropertiesListProps = {
 export default function PropertyListing({ properties, totalProperties, pageSize }: PropertiesListProps) {
     const [sort, setSort] = useState<string>('newest');
     const [currentPage, setCurrentPage] = useState<number>(1);
+    const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
     const sortedProperties = useMemo(() => {
         return [...properties].sort((a, b) => {
@@ -57,6 +61,17 @@ export default function PropertyListing({ properties, totalProperties, pageSize 
         <div>
             <div className="flex flex-row justify-between items-center pt-2 pb-5">
                 <div>Displaying {startIndex}-{endIndex} of {totalProperties} results</div>
+                <div className="flex flex-row items-center gap-2">
+                <Button 
+                    isIconOnly 
+                    size="sm" 
+                    variant="light" 
+                    aria-label="Like"
+                    onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}>
+                    {
+                       viewMode === 'grid' ? <Tooltip content="Go to List View"><LayoutListIcon color="grey"/></Tooltip> : <Tooltip content="Go to Grid View"><LayoutGridIcon color="grey"/></Tooltip>
+                    }
+                </Button>
                 <div className="w-[180px]">
                     <Select
                         onValueChange={handleSortChange}
@@ -72,12 +87,22 @@ export default function PropertyListing({ properties, totalProperties, pageSize 
                         </SelectContent>
                     </Select>
                 </div>
+                </div>
             </div>
+            {
+            viewMode === 'grid' ?
             <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-4">
                 {paginatedProperties.map(property => (
-                    <PropertyCard key={property.id} {...property} />
+                    <PropertyCardGrid key={property.id} {...property} />
                 ))}
             </div>
+            :
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+                {paginatedProperties.map(property => (
+                    <PropertyCardList key={property.id} {...property} />
+                ))}
+            </div>
+            }
             <div className="flex flex-row sm: justify-center md:justify-end">
                 <Pagination
                     total={Math.ceil(totalProperties / pageSize)}
