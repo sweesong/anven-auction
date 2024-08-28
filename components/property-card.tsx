@@ -37,7 +37,8 @@ export function PropertyCardGrid(property: PropertyCardProps) {
             <CardBody>
                 <div className="flex flex-col">
                     <div className="flex-1 flex flex-col justify-between">
-                        <div className="flex flex-col p-1 mt-auto min-h-[60px] gap-1">
+                        <div className="flex flex-col p-1 mt-auto min-h-[80px] gap-1">
+                            <span className="text-xs text-gray-400">#{property.id}</span>
                             <div className="font-bold text-gray-800">{property.title}</div>
                         </div>
                         <div className="flex-1 flex-col p-1 mt-auto min-h-[40px] gap-1">
@@ -125,6 +126,7 @@ export function PropertyCardList(property: PropertyCardProps) {
                     <div className="flex flex-col col-span-8 gap-2">
                         <div className="flex justify-between items-start min-h-[100px] mt-10">
                             <div className="flex flex-col gap-0">
+                                <span className="text-xs text-gray-400">#{property.id}</span>
                                 <h3 className="font-semibold text-foreground/90">{property.title}</h3>
                                 <p className="text-small text-foreground/80 min-h-[40px]">{property.address}</p>
                                 <div className="flex flex-row items-center gap-2">
