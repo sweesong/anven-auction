@@ -11,7 +11,7 @@ import {
 import { useMemo, useState } from 'react';
 import { Pagination } from "@nextui-org/pagination";
 import { PropertyCardProps } from "@/lib/types";
-import { AlignJustifyIcon, Grid2x2Check, Grid2x2CheckIcon, Grid2X2Icon, Grid3X3Icon, LayoutGridIcon, LayoutListIcon, ListIcon } from "lucide-react";
+import { Grid3X3Icon, LayoutGridIcon } from "lucide-react";
 import { Button } from "@nextui-org/button";
 import { Tooltip } from "@nextui-org/tooltip";
 

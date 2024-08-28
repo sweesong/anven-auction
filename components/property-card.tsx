@@ -1,7 +1,6 @@
 import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/card";
 import { Chip } from "@nextui-org/chip";
 import { Divider } from "@nextui-org/divider";
-//import { Image } from "@nextui-org/image";
 import { CalculatorIcon, GavelIcon } from "lucide-react";
 import { WhatsAppIcon } from "../lib/icons";
 import { Link } from "@nextui-org/link";
