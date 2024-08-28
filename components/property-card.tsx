@@ -77,7 +77,7 @@ export function PropertyCardGrid(property: PropertyCardProps) {
             <Divider />
             <CardFooter className="text-xs text-gray-500">
                 <div className="flex flex-col gap-1">
-                    <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">{property.tenure}</Chip>
+                    <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">Tenure: {property.tenure}</Chip>
                     <div className="flex flex-row lg:flex-row justify-between items-center gap-1">
                         <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">Size: {property.size.toLocaleString('en-US')} sqft</Chip>
                     </div>
@@ -87,7 +87,6 @@ export function PropertyCardGrid(property: PropertyCardProps) {
 
     )
 }
-
 
 export function PropertyCardList(property: PropertyCardProps) {
 
@@ -156,7 +155,7 @@ export function PropertyCardList(property: PropertyCardProps) {
 
                         <div className="flex flex-col mt-3 gap-1">
                             <div className="flex justify-between">
-                                <p className="text-small"><Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">{property.tenure}</Chip></p>
+                                <p className="text-small"><Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">Tenure: {property.tenure}</Chip></p>
                                 <p className="text-small text-foreground/50"><Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">Size: {property.size.toLocaleString('en-US')} sqft</Chip></p>
                             </div>
                         </div>

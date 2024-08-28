@@ -8,7 +8,8 @@
 		"start": "next start",
 		"lint": "eslint . --ext .ts,.tsx -c .eslintrc.json --fix",
 		"postinstall": "prisma generate",
-		"seed": "node prisma/seed.js"
+		"seed": "node prisma/seed.js",
+		"seed-from-xlsx": "node prisma/seed-from-xlsx.js"
 	},
 	"dependencies": {
 		"@nextui-org/accordion": "^2.0.38",

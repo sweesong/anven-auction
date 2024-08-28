@@ -32,6 +32,8 @@ export default function PropertyListing({ properties, totalProperties, pageSize 
             if (sort === 'recent_auction') return new Date(a.auction_date).getTime() - new Date(b.auction_date).getTime();
             if (sort === 'price_asc') return a.reserve_price - b.reserve_price;
             if (sort === 'price_desc') return b.reserve_price - a.reserve_price;
+            if (sort === 'size_asc') return a.size - b.size;
+            if (sort === 'size_desc') return b.size - a.size;
             return 0;
         });
     }, [sort, properties]);
@@ -88,6 +90,8 @@ export default function PropertyListing({ properties, totalProperties, pageSize 
                                 <SelectItem value="recent_auction">Recent Auction</SelectItem>
                                 <SelectItem value="price_desc">Highest Price</SelectItem>
                                 <SelectItem value="price_asc">Lowest Price</SelectItem>
+                                <SelectItem value="size_desc">Biggest Size</SelectItem>
+                                <SelectItem value="size_asc">Smallest Size</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>

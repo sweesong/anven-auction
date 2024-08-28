@@ -25,13 +25,18 @@ const getCellValue = (row, cellIndex) => {
   
 };
 
+function parseDate(dateString) {
+  const [day, month, year] = dateString.toString().split('-');
+  return new Date(`${year}-${month}-${day}`);
+}
+
 const main = async () => {
   const workbook = new Excel.Workbook();
   await workbook.xlsx.readFile("./public/auction_listing.xlsx");
 
   const worksheet = workbook.worksheets[1]; // Assuming you want to read the second sheet
   const rowStartIndex = 2;
-  const numberOfRows = 500;
+  const numberOfRows = worksheet.rowCount;
 
   const rows = worksheet.getRows(rowStartIndex, numberOfRows) || [];
 
@@ -62,7 +67,7 @@ const main = async () => {
     return {
       //id: getCellValue(row, 2),
       title: title,
-      auction_date: new Date(getCellValue(row, 3)),
+      auction_date: parseDate(getCellValue(row, 3)),
       city: getCellValue(row, 4),
       //unitno: getCellValue(row, 5),
       address: address,
@@ -84,7 +89,7 @@ const main = async () => {
     data: data,
   });
 
-  console.log(data);
+  console.log(data.length);
 };
 
 main().then();
