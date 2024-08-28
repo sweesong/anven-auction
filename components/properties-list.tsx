@@ -11,7 +11,7 @@ import {
 import { useMemo, useState } from 'react';
 import { Pagination } from "@nextui-org/pagination";
 import { PropertyCardProps } from "@/lib/types";
-import { AlignJustifyIcon, Grid2x2Check, Grid2x2CheckIcon, Grid2X2Icon, LayoutGridIcon, LayoutListIcon, ListIcon } from "lucide-react";
+import { AlignJustifyIcon, Grid2x2Check, Grid2x2CheckIcon, Grid2X2Icon, Grid3X3Icon, LayoutGridIcon, LayoutListIcon, ListIcon } from "lucide-react";
 import { Button } from "@nextui-org/button";
 import { Tooltip } from "@nextui-org/tooltip";
 
@@ -71,7 +71,7 @@ export default function PropertyListing({ properties, totalProperties, pageSize 
                             onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}>
                             {
 
-                                viewMode === 'grid' ? <Tooltip content="Go to List View"><LayoutListIcon color="grey" /></Tooltip> : <Tooltip content="Go to Grid View"><LayoutGridIcon color="grey" /></Tooltip>
+                                viewMode === 'grid' ? <Tooltip content="Display 2 per row"><LayoutGridIcon color="grey" /></Tooltip> : <Tooltip content="Display 5 per row"><Grid3X3Icon color="grey" /></Tooltip>
 
                             }
                         </Button>
