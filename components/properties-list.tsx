@@ -52,7 +52,7 @@ export default function PropertyListing({ properties, totalProperties, pageSize 
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
-        window.scrollTo({ top: 100, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: 'auto' });
     };
 
     // Calculate the displayed range
