@@ -15,6 +15,7 @@ export type PropertyCardProps = {
     size: number;
     type: string;
     tenure: string;
+    extra_info: string;
     image_url: string | null;
     createdAt: Date;
     updatedAt: Date | null;

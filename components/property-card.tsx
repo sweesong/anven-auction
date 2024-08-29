@@ -76,11 +76,10 @@ export function PropertyCardGrid(property: PropertyCardProps) {
             </CardBody>
             <Divider />
             <CardFooter className="text-xs text-gray-500 min-h-[80px]">
-                <div className="flex flex-row gap-1">
+                <div className="flex flex-wrap gap-1">
                     {property.size > 0 ? <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">Size: {property.size.toLocaleString('en-US')} sqft</Chip> : ""}
-                    <div className="flex flex-row lg:flex-row justify-between items-center gap-1">
-                        {property.tenure != "N/A" ? <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">{property.tenure}</Chip> : ""}
-                    </div>
+                    {property.tenure != "N/A" ? <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">{property.tenure}</Chip> : ""}
+                    {property.extra_info != null ? <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">{property.extra_info}</Chip> : ""}
                 </div>
             </CardFooter>
         </Card>
@@ -138,13 +137,11 @@ export function PropertyCardList(property: PropertyCardProps) {
                         </div>
 
                         <div className="flex flex-col mt-2 gap-1">
-                            <div className="flex gap-2">
-                                <p className="text-small">
+                            <div className="flex gap-2 text-small text-foreground/50">
                                     {property.size > 0 ? <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">Size: {property.size.toLocaleString('en-US')} sqft</Chip> : ""}
-                                </p>
-                                <p className="text-small text-foreground/50">
                                     {property.tenure != "N/A" ? <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">{property.tenure}</Chip> : ""}
-                                </p>
+                                    {property.extra_info != null ? <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">{property.extra_info}</Chip> : ""}
+                            
                             </div>
                         </div>
                         <div className="flex w-full items-center justify-center">

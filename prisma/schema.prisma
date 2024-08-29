@@ -22,7 +22,12 @@ model properties {
 	  size            Float       @map("property_size")
 	  type            String      @map("property_type")
 	  tenure          String
+    extra_info      String?
 	  image_url       String?
     createdAt       DateTime    @default(now())
     updatedAt       DateTime?
 }
+
+//npx prisma db push
+//npx prisma generate
+//npx prisma studio
