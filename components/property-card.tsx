@@ -10,8 +10,7 @@ import { PropertyCardProps } from "@/lib/types";
 import { contactConfig } from "@/config/contact";
 import  Image from 'antd/es/image';
 
-export function PropertyCardGrid(property: PropertyCardProps) {
-
+const getWhatsappStr = (property: PropertyCardProps): string => {
     var whatsappString: string = contactConfig.whatsapp_linkmsg;
 
     whatsappString = whatsappString.replace("[id]", "[" + property.id + "]");
@@ -21,6 +20,13 @@ export function PropertyCardGrid(property: PropertyCardProps) {
     whatsappString = whatsappString.replace("[price]", "[RM " + property.reserve_price.toLocaleString("en-US") + "]");
 
     whatsappString = whatsappString.replace(/ /g, "%20");
+
+    return whatsappString;
+};
+
+export function PropertyCardGrid(property: PropertyCardProps) {
+
+    const whatsappString = getWhatsappStr(property);
 
     return (
         <Card className="w-full">
@@ -76,9 +82,9 @@ export function PropertyCardGrid(property: PropertyCardProps) {
             <Divider />
             <CardFooter className="text-xs text-gray-500">
                 <div className="flex flex-col gap-1">
-                    <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">Tenure: {property.tenure}</Chip>
+                <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">Size: {property.size.toLocaleString('en-US')} sqft</Chip>
                     <div className="flex flex-row lg:flex-row justify-between items-center gap-1">
-                        <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">Size: {property.size.toLocaleString('en-US')} sqft</Chip>
+                    <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">{property.tenure}</Chip>
                     </div>
                 </div>
             </CardFooter>
@@ -89,15 +95,7 @@ export function PropertyCardGrid(property: PropertyCardProps) {
 
 export function PropertyCardList(property: PropertyCardProps) {
 
-    var whatsappString: string = contactConfig.whatsapp_linkmsg;
-
-    whatsappString = whatsappString.replace("[id]", "[" + property.id + "]");
-    whatsappString = whatsappString.replace("[title]", "[" + property.title + "]");
-    whatsappString = whatsappString.replace("[address]", "[" + property.address + "]");
-    whatsappString = whatsappString.replace("[auctiondate]", "[" + formatDateToStr(property.auction_date) + "]");
-    whatsappString = whatsappString.replace("[price]", "[RM " + property.reserve_price.toLocaleString("en-US") + "]");
-
-    whatsappString = whatsappString.replace(/ /g, "%20");
+    const whatsappString = getWhatsappStr(property);
 
     return (
         <Card
@@ -109,23 +107,24 @@ export function PropertyCardList(property: PropertyCardProps) {
                 <Chip variant="shadow" color="warning">{property.type}</Chip>
             </CardHeader>
             <CardBody>
-                <div className="grid grid-cols-12 gap-6 items-center justify-center">
-                    <div className="relative col-span-4">
+                <div className="grid grid-cols-6 md:grid-cols-12 gap-6 md:gap-4 items-center justify-center">
+                    <div className="relative col-span-6 md:col-span-3">
+                        <div className="aspect-w-16 aspect-h-9">
                         <Image
                             alt={"image:#"+property.id.toString()}
-                            className="z-0 object-cover"
-                            height={200}
-                            src={property.image_url == null ? "placeholder.png" : property.image_url}
+                            className="z-0 object-cover md:max-h-[200px]"
                             width="100%"
-                        />
+                            src={property.image_url == null ? "placeholder.png" : property.image_url}
+                         />
+                        </div>
                     </div>
 
-                    <div className="flex flex-col col-span-8 gap-2">
-                        <div className="flex justify-between items-start min-h-[100px] mt-10">
-                            <div className="flex flex-col gap-0">
+                    <div className="flex flex-col col-span-6 md:col-span-9 gap-2">
+                        <div className="flex justify-between items-start">
+                            <div className="flex flex-col">
                                 <span className="text-xs text-gray-400">#{property.id}</span>
                                 <h3 className="font-semibold text-foreground/90">{property.title}</h3>
-                                <p className="text-small text-foreground/80 min-h-[40px]">{property.address}</p>
+                                <p className="text-small text-foreground/80">{property.address}</p>
                                 <div className="flex flex-row items-center gap-2">
                                 <h1 className="text-large font-medium mt-2">RM {property.reserve_price.toLocaleString("en-US")}</h1>
                                 <Tooltip content="Whatsapp Me">
@@ -151,10 +150,14 @@ export function PropertyCardList(property: PropertyCardProps) {
                             </Tooltip>
                         </div>
 
-                        <div className="flex flex-col mt-3 gap-1">
+                        <div className="flex flex-col mt-2 gap-1">
                             <div className="flex justify-between">
-                                <p className="text-small"><Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">Tenure: {property.tenure}</Chip></p>
-                                <p className="text-small text-foreground/50"><Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">Size: {property.size.toLocaleString('en-US')} sqft</Chip></p>
+                                <p className="text-small">
+                                <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">Size: {property.size.toLocaleString('en-US')} sqft</Chip>
+                                </p>
+                                <p className="text-small text-foreground/50">
+                                    <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">{property.tenure}</Chip>
+                                </p>
                             </div>
                         </div>
                         <div className="flex w-full items-center justify-center">

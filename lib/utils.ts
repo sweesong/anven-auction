@@ -69,16 +69,12 @@ export const generatePagination = (currentPage: number, totalPages: number) => {
   ];
 };
 
-export const formatDateToStr = (
-  rawDate: Date,
-) => {
-  
+export const formatDateToStr = (rawDate: Date): string => {
+  const day = rawDate.getDate();
+  const month = rawDate.toLocaleString('en-US', { month: 'short' });
   const year = rawDate.getFullYear();
-  const month = ('0' + (rawDate.getMonth() + 1)).slice(-2); // Adding 1 because months are 0-indexed
-  const day = ('0' + rawDate.getDate()).slice(-2);
-  const shortWeekday = rawDate.toLocaleString('en-US', { weekday: 'short' });
 
-  const customString: string = `${year}-${month}-${day} (${shortWeekday.toUpperCase()})`;
+  const formattedDate = `${day} ${month} ${year}`;
 
-  return customString;
+  return formattedDate;
 };
