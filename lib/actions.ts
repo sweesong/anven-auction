@@ -36,32 +36,27 @@ export async function fetchProperties(
   
   var filters: any[];
 
-  if(!isNaN(parseInt(searchQuery))){
-    filters = [
-      searchQuery ? {
-        id: parseInt(searchQuery) // Exact match for ID
-      } : undefined,
-    ]
-  } else {
-    filters = [
-      {
-        OR: [
-          searchQuery ? {
-            title: {
-              contains: searchQuery,
-              mode: 'insensitive' // Case-insensitive search
-            }
-          } : undefined,
-          searchQuery ? {
-            address: {
-              contains: searchQuery,
-              mode: 'insensitive' // Case-insensitive search
-            }
-          } : undefined
-        ].filter(Boolean) // Remove undefined values from OR array
-      }
-    ];
-  }
+  filters = [
+    {
+      OR: [
+        searchQuery ? {
+          id: searchQuery // Exact match for ID
+        } : undefined,
+        searchQuery ? {
+          title: {
+            contains: searchQuery,
+            mode: 'insensitive' // Case-insensitive search
+          }
+        } : undefined,
+        searchQuery ? {
+          address: {
+            contains: searchQuery,
+            mode: 'insensitive' // Case-insensitive search
+          }
+        } : undefined
+      ].filter(Boolean) // Remove undefined values from OR array
+    }
+  ];
 
   // Add property type filter if it's not "00"
   if (propertyType && propertyType !== '00') {

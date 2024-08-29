@@ -65,7 +65,7 @@ const main = async () => {
     const title = address.split(',')[0];
     
     return {
-      //id: getCellValue(row, 2),
+      id: getCellValue(row, 2),
       title: title,
       auction_date: parseDate(getCellValue(row, 3)),
       city: getCellValue(row, 4),

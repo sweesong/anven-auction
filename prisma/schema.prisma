@@ -12,7 +12,7 @@ datasource db {
 }
 
 model properties {
-    id              Int         @id @default(autoincrement())
+    id              String         @id
     title           String
     auction_date    DateTime
 	  city            String

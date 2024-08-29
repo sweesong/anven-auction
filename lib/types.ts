@@ -5,7 +5,7 @@ export type IconSvgProps = SVGProps<SVGSVGElement> & {
   };
 
 export type PropertyCardProps = {
-    id: number;
+    id: string;
     title: string;
     auction_date: Date;
     city: string;
