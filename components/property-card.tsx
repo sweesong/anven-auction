@@ -8,7 +8,8 @@ import { formatDateToStr } from "@/lib/utils";
 import { Tooltip } from "@nextui-org/tooltip";
 import { PropertyCardProps } from "@/lib/types";
 import { contactConfig } from "@/config/contact";
-import  Image from 'antd/es/image';
+import Image from 'antd/es/image';
+import { Spacer } from "@nextui-org/spacer";
 
 const getWhatsappStr = (property: PropertyCardProps): string => {
     var whatsappString: string = contactConfig.whatsapp_linkmsg;
@@ -34,7 +35,7 @@ export function PropertyCardGrid(property: PropertyCardProps) {
                 <Chip variant="shadow" color="warning">{property.type}</Chip>
             </CardHeader>
             <Image
-                alt={"image:#"+property.id.toString()}
+                alt={"image:#" + property.id.toString()}
                 className="z-0 w-full h-60 object-cover"
                 src={property.image_url == null ? "placeholder.png" : property.image_url}
                 width="100%"
@@ -51,21 +52,13 @@ export function PropertyCardGrid(property: PropertyCardProps) {
                                 <div className="flex flex-row font-bold text-xl gap-2">
                                     <div className="flex items-center gap-1">
                                         RM {property.reserve_price.toLocaleString("en-US")}
-                                        <Tooltip content="Whatsapp Me">
-                                            <Link className="text-green-600"
-                                                isExternal
-                                                showAnchorIcon
-                                                href={whatsappString}
-                                                anchorIcon={<WhatsAppIcon />}
-                                            />
-                                        </Tooltip>
                                     </div>
                                 </div>
                                 <div className="flex flex-row text-xs text-gray-400 gap-1">
-
-                                    <CalculatorIcon size={14} />
-                                    <Tooltip content="Estimated Market Prices">{property.estimate_price != null ? "RM " + property.estimate_price.toLocaleString('en-US') : "N/A"}</Tooltip>
-
+                                    {property.estimate_price != null 
+                                    ? (<span className="flex flex-row gap-1"><CalculatorIcon size={14} /> Est. Market Price: RM {property.estimate_price.toLocaleString('en-US')}</span>)
+                                    : (<Spacer y={2} />)
+                                    }
                                 </div>
                                 <div className="flex gap-1 items-center">
                                     <GavelIcon size={14} />
@@ -74,7 +67,9 @@ export function PropertyCardGrid(property: PropertyCardProps) {
                                     </Tooltip>
                                 </div>
                             </div>
-                            <div className="text-gray-600 pt-4 text-xs text-gray-400">{property.address}</div>
+                            <div className="text-gray-600 pt-4 text-xs text-gray-400">
+                                [<Link className="text-sm text-green-600" isExternal showAnchorIcon href={whatsappString} anchorIcon={<WhatsAppIcon size={12} />}>Whatsapp Me<Spacer x={1} /></Link>], {property.address}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -82,9 +77,9 @@ export function PropertyCardGrid(property: PropertyCardProps) {
             <Divider />
             <CardFooter className="text-xs text-gray-500 min-h-[80px]">
                 <div className="flex flex-col gap-1">
-                {property.size>0?<Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">Size: {property.size.toLocaleString('en-US')} sqft</Chip>:""}
+                    {property.size > 0 ? <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">Size: {property.size.toLocaleString('en-US')} sqft</Chip> : ""}
                     <div className="flex flex-row lg:flex-row justify-between items-center gap-1">
-                    {property.tenure!="N/A"?<Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">{property.tenure}</Chip>:""}
+                        {property.tenure != "N/A" ? <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">{property.tenure}</Chip> : ""}
                     </div>
                 </div>
             </CardFooter>
@@ -110,12 +105,12 @@ export function PropertyCardList(property: PropertyCardProps) {
                 <div className="grid grid-cols-6 md:grid-cols-12 gap-6 md:gap-4 items-center justify-center">
                     <div className="relative col-span-6 md:col-span-3">
                         <div className="aspect-w-16 aspect-h-9">
-                        <Image
-                            alt={"image:#"+property.id.toString()}
-                            className="z-0 object-cover md:max-h-[200px]"
-                            width="100%"
-                            src={property.image_url == null ? "placeholder.png" : property.image_url}
-                         />
+                            <Image
+                                alt={"image:#" + property.id.toString()}
+                                className="z-0 object-cover md:max-h-[200px]"
+                                width="100%"
+                                src={property.image_url == null ? "placeholder.png" : property.image_url}
+                            />
                         </div>
                     </div>
 
@@ -124,24 +119,16 @@ export function PropertyCardList(property: PropertyCardProps) {
                             <div className="flex flex-col">
                                 <span className="text-xs text-gray-400">#{property.id}</span>
                                 <h3 className="font-semibold text-foreground/90">{property.title}</h3>
-                                <p className="text-small text-foreground/80">{property.address}</p>
+                                <p className="text-small text-foreground/80">[<Link className="text-sm text-green-600" isExternal showAnchorIcon href={whatsappString} anchorIcon={<WhatsAppIcon size={12}/>}>Whatsapp Me<Spacer x={1} /></Link>], {property.address}</p>
                                 <div className="flex flex-row items-center gap-2">
-                                <h1 className="text-large font-medium mt-2">RM {property.reserve_price.toLocaleString("en-US")}</h1>
-                                <Tooltip content="Whatsapp Me">
-                                            <Link className="text-green-600"
-                                                isExternal
-                                                showAnchorIcon
-                                                href={whatsappString}
-                                                anchorIcon={<WhatsAppIcon />}
-                                            />
-                                        </Tooltip>
-                                        </div>
+                                    <h1 className="text-large font-medium mt-2">RM {property.reserve_price.toLocaleString("en-US")}</h1>
+                                </div>
                             </div>
                         </div>
                         <div className="flex flex-row text-xs text-gray-400 gap-1">
-                            <CalculatorIcon size={14} />
-                            <Tooltip content="Estimated Market Prices">{property.estimate_price != null ? "RM " + property.estimate_price.toLocaleString('en-US') : "N/A"}</Tooltip>
-
+                            {property.estimate_price != null 
+                            ? (<span className="flex flex-row gap-1"><CalculatorIcon size={14} /> Est. Market Price: RM {property.estimate_price.toLocaleString('en-US')}</span>) : ""
+                            }
                         </div>
                         <div className="flex gap-1 items-center">
                             <GavelIcon size={14} />
@@ -153,10 +140,10 @@ export function PropertyCardList(property: PropertyCardProps) {
                         <div className="flex flex-col mt-2 gap-1">
                             <div className="flex gap-2">
                                 <p className="text-small">
-                                {property.size>0?<Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">Size: {property.size.toLocaleString('en-US')} sqft</Chip>:""}
+                                    {property.size > 0 ? <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">Size: {property.size.toLocaleString('en-US')} sqft</Chip> : ""}
                                 </p>
                                 <p className="text-small text-foreground/50">
-                                {property.tenure!="N/A"?<Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">{property.tenure}</Chip>:""}
+                                    {property.tenure != "N/A" ? <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">{property.tenure}</Chip> : ""}
                                 </p>
                             </div>
                         </div>
