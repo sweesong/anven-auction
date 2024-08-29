@@ -102,7 +102,7 @@ export function PropertyCardList(property: PropertyCardProps) {
     return (
         <Card
             isBlurred
-            className="border-none bg-background/60 dark:bg-default-100/50 max-w-[610px]"
+            className="border-none bg-background/60 dark:bg-default-100/50"
             shadow="sm"
         >
             <CardHeader className="absolute z-10 top-1 flex-col !items-start">

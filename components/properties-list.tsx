@@ -11,7 +11,7 @@ import {
 import { useMemo, useState } from 'react';
 import { Pagination } from "@nextui-org/pagination";
 import { PropertyCardProps } from "@/lib/types";
-import { Grid3X3Icon, LayoutGridIcon } from "lucide-react";
+import { Grid3X3Icon, LayoutGridIcon, LayoutListIcon } from "lucide-react";
 import { Button } from "@nextui-org/button";
 import { Tooltip } from "@nextui-org/tooltip";
 
@@ -73,7 +73,7 @@ export default function PropertyListing({ properties, totalProperties, pageSize 
                             onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}>
                             {
 
-                                viewMode === 'grid' ? <Tooltip content="Display 2 per row"><LayoutGridIcon color="grey" /></Tooltip> : <Tooltip content="Display 5 per row"><Grid3X3Icon color="grey" /></Tooltip>
+                                viewMode === 'grid' ? <Tooltip content="List View"><LayoutListIcon color="grey" /></Tooltip> : <Tooltip content="Grid View"><Grid3X3Icon color="grey" /></Tooltip>
 
                             }
                         </Button>
@@ -99,13 +99,13 @@ export default function PropertyListing({ properties, totalProperties, pageSize 
             </div>
             {
                 viewMode === 'grid' ?
-                    <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                         {paginatedProperties.map(property => (
                             <PropertyCardGrid key={property.id} {...property} />
                         ))}
                     </div>
                     :
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 gap-4">
                         {paginatedProperties.map(property => (
                             <PropertyCardList key={property.id} {...property} />
                         ))}
