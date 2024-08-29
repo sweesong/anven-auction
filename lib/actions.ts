@@ -33,7 +33,7 @@ export async function fetchProperties(
   const parsedMaxPrice = parseFloat(maxPrice.toString());
   const parsedMinSize = parseFloat(minSize.toString());
   const parsedMaxSize = parseFloat(maxSize.toString());
-  
+
   var filters: any[];
 
   filters = [
@@ -87,7 +87,7 @@ export async function fetchProperties(
 
   // Add price range filter
   if ((parsedMinPrice !== undefined && parsedMaxPrice !== undefined)
-    && (parsedMinPrice!=0 && parsedMinPrice!=10000000)
+    && (!(parsedMinPrice==0 && parsedMaxPrice==10000000))
   ) {
     if(parsedMinPrice == parsedMaxPrice)
     {
@@ -108,7 +108,7 @@ export async function fetchProperties(
 
   // Add size range filter
   if ((parsedMinSize !== undefined && parsedMaxSize !== undefined)
-    && (parsedMinSize!=0 && parsedMaxSize!=50000)
+    && (!(parsedMinSize==0 && parsedMaxSize==50000))
   ) {
     if(parsedMinSize == parsedMaxSize)
     {

@@ -1,7 +1,7 @@
 import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/card";
 import { Chip } from "@nextui-org/chip";
 import { Divider } from "@nextui-org/divider";
-import { CalculatorIcon, GavelIcon } from "lucide-react";
+import { CalculatorIcon, GavelIcon, PercentIcon } from "lucide-react";
 import { WhatsAppIcon } from "../lib/icons";
 import { Link } from "@nextui-org/link";
 import { formatDateToStr } from "@/lib/utils";
@@ -29,6 +29,13 @@ export function PropertyCardGrid(property: PropertyCardProps) {
 
     const whatsappString = getWhatsappStr(property);
 
+    let discountRate : number = -1;
+
+    if(property.estimate_price!=null){
+        discountRate = ((property.estimate_price - property.reserve_price) / property.estimate_price) * 100;
+        discountRate = Math.ceil(discountRate);
+    }
+
     return (
         <Card className="w-full">
             <CardHeader className="absolute z-10 top-1 flex-col !items-start">
@@ -52,12 +59,13 @@ export function PropertyCardGrid(property: PropertyCardProps) {
                                 <div className="flex flex-row font-bold text-xl gap-2">
                                     <div className="flex items-center gap-1">
                                         RM {property.reserve_price.toLocaleString("en-US")}
+                                        {discountRate > -1 ? (<Chip radius="sm" endContent={<PercentIcon size={10} />} color="danger">-{discountRate}</Chip>) : ''} 
                                     </div>
                                 </div>
                                 <div className="flex flex-row text-xs text-gray-400 gap-1">
                                     {property.estimate_price != null 
                                     ? (<span className="flex flex-row gap-1"><CalculatorIcon size={14} /> Est. Market Price: RM {property.estimate_price.toLocaleString('en-US')}</span>)
-                                    : (<Spacer y={2} />)
+                                    : (<Spacer y={4} />)
                                     }
                                 </div>
                                 <div className="flex gap-1 items-center">
@@ -91,6 +99,13 @@ export function PropertyCardList(property: PropertyCardProps) {
 
     const whatsappString = getWhatsappStr(property);
 
+    let discountRate : number = -1;
+
+    if(property.estimate_price!=null){
+        discountRate = ((property.estimate_price - property.reserve_price) / property.estimate_price) * 100;
+        discountRate = Math.ceil(discountRate);
+    }
+
     return (
         <Card
             isBlurred
@@ -120,7 +135,10 @@ export function PropertyCardList(property: PropertyCardProps) {
                                 <h3 className="font-semibold text-foreground/90">{property.title}</h3>
                                 <p className="text-small text-foreground/80">[<Link className="text-sm text-green-600" isExternal showAnchorIcon href={whatsappString} anchorIcon={<WhatsAppIcon size={12}/>}>Whatsapp Me<Spacer x={1} /></Link>], {property.address}</p>
                                 <div className="flex flex-row items-center gap-2">
-                                    <h1 className="text-large font-medium mt-2">RM {property.reserve_price.toLocaleString("en-US")}</h1>
+                                    <div className="font-bold text-xl mt-2">
+                                        RM {property.reserve_price.toLocaleString("en-US")}
+                                    </div>
+                                    <div>{discountRate > -1 ? (<Chip radius="sm" size="sm" endContent={<PercentIcon size={10} />} color="danger">-{discountRate}</Chip>) : ''} </div>
                                 </div>
                             </div>
                         </div>

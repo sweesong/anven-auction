@@ -34,6 +34,13 @@ export default function PropertyListing({ properties, totalProperties, pageSize 
             if (sort === 'price_desc') return b.reserve_price - a.reserve_price;
             if (sort === 'size_asc') return a.size - b.size;
             if (sort === 'size_desc') return b.size - a.size;
+            if (sort === 'discount_desc') {
+                if (b.estimate_price === null) return -1;
+                if (a.estimate_price === null) return 1;
+                const aProfitPercentage = ((a.estimate_price - a.reserve_price) / a.reserve_price) * 100;
+                const bProfitPercentage = ((b.estimate_price - b.reserve_price) / b.reserve_price) * 100;
+                return bProfitPercentage - aProfitPercentage;
+            }
             return 0;
         });
     }, [sort, properties]);
@@ -92,6 +99,7 @@ export default function PropertyListing({ properties, totalProperties, pageSize 
                                 <SelectItem value="price_asc">Lowest Price</SelectItem>
                                 <SelectItem value="size_desc">Biggest Size</SelectItem>
                                 <SelectItem value="size_asc">Smallest Size</SelectItem>
+                                <SelectItem value="discount_desc">Highest Discounted (Based on Est Market Price)</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
