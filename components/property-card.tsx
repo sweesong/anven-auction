@@ -59,7 +59,7 @@ export function PropertyCardGrid(property: PropertyCardProps) {
                                 <div className="flex flex-row font-bold text-xl gap-2">
                                     <div className="flex items-center gap-1">
                                         RM {property.reserve_price.toLocaleString("en-US")}
-                                        {discountRate > -1 ? (<Chip radius="sm" endContent={<PercentIcon size={10} />} color="danger">-{discountRate}</Chip>) : ''} 
+                                        {discountRate > -1 ? (<Chip size="sm" radius="sm" endContent={<PercentIcon size={10} />} color="danger">-{discountRate}</Chip>) : ''} 
                                     </div>
                                 </div>
                                 <div className="flex flex-row text-xs text-gray-400 gap-1">
