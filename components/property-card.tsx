@@ -151,12 +151,12 @@ export function PropertyCardList(property: PropertyCardProps) {
                         </div>
 
                         <div className="flex flex-col mt-2 gap-1">
-                            <div className="flex justify-between">
+                            <div className="flex gap-2">
                                 <p className="text-small">
-                                <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">Size: {property.size.toLocaleString('en-US')} sqft</Chip>
+                                {property.size>0?<Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">Size: {property.size.toLocaleString('en-US')} sqft</Chip>:""}
                                 </p>
                                 <p className="text-small text-foreground/50">
-                                    <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">{property.tenure}</Chip>
+                                {property.tenure!="N/A"?<Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">{property.tenure}</Chip>:""}
                                 </p>
                             </div>
                         </div>
