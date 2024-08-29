@@ -76,7 +76,7 @@ export function PropertyCardGrid(property: PropertyCardProps) {
             </CardBody>
             <Divider />
             <CardFooter className="text-xs text-gray-500 min-h-[80px]">
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-row gap-1">
                     {property.size > 0 ? <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">Size: {property.size.toLocaleString('en-US')} sqft</Chip> : ""}
                     <div className="flex flex-row lg:flex-row justify-between items-center gap-1">
                         {property.tenure != "N/A" ? <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">{property.tenure}</Chip> : ""}
