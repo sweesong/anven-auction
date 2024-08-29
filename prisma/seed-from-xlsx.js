@@ -32,10 +32,10 @@ function parseDate(dateString) {
 
 const main = async () => {
   const workbook = new Excel.Workbook();
-  await workbook.xlsx.readFile("./public/auction_listing.xlsx");
+  await workbook.xlsx.readFile("./public/Auction_Listing_2024_08_24.xlsx");
 
-  const worksheet = workbook.worksheets[1]; // Assuming you want to read the second sheet
-  const rowStartIndex = 2;
+  const worksheet = workbook.worksheets[0]; // Assuming you want to read the second sheet
+  const rowStartIndex = 5;
   const numberOfRows = worksheet.rowCount;
 
   const rows = worksheet.getRows(rowStartIndex, numberOfRows) || [];
@@ -48,7 +48,8 @@ const main = async () => {
     })
     .map((row) => {
       estimateprice = null;
-      const rawAddress = getCellValue(row, 6);
+      const rawAddress = getCellValue(row, 5);
+      
       const [address, extraInfo] = rawAddress.split('@@@@');
 
       var trimmedExtraInfo = extraInfo ? extraInfo.trim() : null;
@@ -76,11 +77,11 @@ const main = async () => {
         //unitno: getCellValue(row, 5),
         address: address,
         extra_info: trimmedExtraInfo,
-        reserve_price: parseFloat(getCellValue(row, 7)),
+        reserve_price: parseFloat(getCellValue(row, 6)),
         estimate_price: estimateprice,
-        size: !isNaN(parseFloat(getCellValue(row, 8))) ? parseFloat(getCellValue(row, 8)) : 0,
-        type: getCellValue(row, 9),
-        tenure: getCellValue(row, 10),
+        size: !isNaN(parseFloat(getCellValue(row, 7))) ? parseFloat(getCellValue(row, 7)) : 0,
+        type: getCellValue(row, 8),
+        tenure: getCellValue(row, 9),
         image_url: 'placeholder.png'
       };
     });
@@ -93,6 +94,7 @@ const main = async () => {
     data: data,
   });
 
+  //console.log(data);
   console.log(data.length);
 };
 

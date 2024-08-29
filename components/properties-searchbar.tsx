@@ -73,7 +73,6 @@ export default function PropertiesSearchBar() {
       }}
       labelPlacement="outside"
       placeholder="Search your dream properties ..."
-      description="you may search the id by just input the number" 
       startContent={
         <SearchIcon className="text-base text-default-400 pointer-events-none flex-shrink-0" />
       }
