@@ -70,11 +70,12 @@ export const generatePagination = (currentPage: number, totalPages: number) => {
 };
 
 export const formatDateToStr = (rawDate: Date): string => {
+  const dayOfWeek = rawDate.toLocaleString('en-US', { weekday: 'short' });
   const day = rawDate.getDate();
   const month = rawDate.toLocaleString('en-US', { month: 'short' });
   const year = rawDate.getFullYear();
 
-  const formattedDate = `${day} ${month} ${year}`;
+  const formattedDate = `${day} ${month} ${year} (${dayOfWeek})`;
 
   return formattedDate;
 };
