@@ -71,7 +71,7 @@ export const generatePagination = (currentPage: number, totalPages: number) => {
 
 export const formatDateToStr = (rawDate: Date): string => {
   const dayOfWeek = rawDate.toLocaleString('en-US', { weekday: 'short' });
-  const day = rawDate.getDate();
+  const day = ('0' + rawDate.getDate()).slice(-2);
   const month = rawDate.toLocaleString('en-US', { month: 'short' });
   const year = rawDate.getFullYear();
 
