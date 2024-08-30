@@ -10,6 +10,7 @@ import { PropertyCardProps } from "@/lib/types";
 import { contactConfig } from "@/config/contact";
 import Image from 'antd/es/image';
 import { Spacer } from "@nextui-org/spacer";
+import { VERCEL_IMAGE_BASE_URL } from "@/lib/constants";
 
 const getWhatsappStr = (property: PropertyCardProps): string => {
     var whatsappString: string = contactConfig.whatsapp_linkmsg;
@@ -24,6 +25,13 @@ const getWhatsappStr = (property: PropertyCardProps): string => {
 
     return whatsappString;
 };
+
+const getPropertyImageLink = (id: string) : string => {
+
+    const strImageLink = VERCEL_IMAGE_BASE_URL + id.toString() + ".png";
+
+    return strImageLink;
+}
 
 export function PropertyCardGrid(property: PropertyCardProps) {
 
@@ -44,7 +52,8 @@ export function PropertyCardGrid(property: PropertyCardProps) {
             <Image
                 alt={"image:#" + property.id.toString()}
                 className="z-0 w-full h-60 object-cover"
-                src={property.image_url == null ? "placeholder.png" : property.image_url}
+                src={getPropertyImageLink(property.id)}
+                fallback="placeholder.png"
                 width="100%"
             />
             <CardBody>
@@ -123,7 +132,8 @@ export function PropertyCardList(property: PropertyCardProps) {
                                 alt={"image:#" + property.id.toString()}
                                 className="z-0 object-cover md:max-h-[200px]"
                                 width="100%"
-                                src={property.image_url == null ? "placeholder.png" : property.image_url}
+                                src={getPropertyImageLink(property.id)}
+                                fallback="placeholder.png"
                             />
                         </div>
                     </div>
