@@ -9,6 +9,10 @@ export const siteConfig = {
       href: "/properties",
     },
     {
+      label: "FAQ",
+      href: "/faq",
+    },
+    {
       label: "Terms & Conditions",
       href: "/terms",
     },
@@ -17,6 +21,10 @@ export const siteConfig = {
     {
       label: "Properties",
       href: "/properties",
+    },
+    {
+      label: "FAQ",
+      href: "/faq",
     },
     {
       label: "Terms & Conditions",

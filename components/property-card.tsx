@@ -10,7 +10,7 @@ import { PropertyCardProps } from "@/lib/types";
 import { contactConfig } from "@/config/contact";
 import Image from 'antd/es/image';
 import { Spacer } from "@nextui-org/spacer";
-import { VERCEL_IMAGE_BASE_URL } from "@/lib/constants";
+import { VERCEL_IMAGE_BASE_URL } from "@/config/constants";
 
 const getWhatsappStr = (property: PropertyCardProps): string => {
     var whatsappString: string = contactConfig.whatsapp_linkmsg;
