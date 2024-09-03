@@ -94,7 +94,7 @@ export function PropertyCardGrid(property: PropertyCardProps) {
             <Divider />
             <CardFooter className="text-xs text-gray-500 min-h-[80px]">
                 <div className="flex flex-wrap gap-1">
-                    {property.size > 0 ? <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">Size: {property.size.toLocaleString('en-US')} sqft</Chip> : ""}
+                    {property.size > 0 ? <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">Size: {property.size>50000? ((property.size/43560).toLocaleString('en-US') + " acres") : (property.size.toLocaleString('en-US') + "sqft")}</Chip> : ""}
                     {property.tenure != "N/A" ? <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">{property.tenure}</Chip> : ""}
                     {property.extra_info != null ? <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">{property.extra_info}</Chip> : ""}
                 </div>
@@ -166,7 +166,7 @@ export function PropertyCardList(property: PropertyCardProps) {
 
                         <div className="flex flex-col mt-2 gap-1">
                             <div className="flex gap-2 text-small text-foreground/50">
-                                    {property.size > 0 ? <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">Size: {property.size.toLocaleString('en-US')} sqft</Chip> : ""}
+                            {property.size > 0 ? <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">Size: {property.size>50000? ((property.size/43560).toLocaleString('en-US') + " acres") : (property.size.toLocaleString('en-US') + "sqft")}</Chip> : ""}
                                     {property.tenure != "N/A" ? <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">{property.tenure}</Chip> : ""}
                                     {property.extra_info != null ? <Chip color="warning" className="text-gray-800" size="sm" radius="sm" variant="bordered">{property.extra_info}</Chip> : ""}
                             
