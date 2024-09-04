@@ -132,7 +132,7 @@ function deepDiff(newObj: any, oldObj: any): any {
 }
 
 export async function GET(request: Request): Promise<NextResponse> {
-  try {
+  //try {
     console.log("hello");
     const sheetProperties = await extractNewProperties();
     console.log("hello1");
@@ -175,7 +175,7 @@ export async function GET(request: Request): Promise<NextResponse> {
         data: [...newData, ...updateData, ...closeData],
         updateDiff
       });
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to process properties' });
-  }
+  //} catch (error) {
+  //  return NextResponse.json({ error: 'Failed to process properties' });
+ // }
 }
