@@ -2,8 +2,7 @@ import { S3Client, GetObjectCommand, ListObjectsV2Command } from "@aws-sdk/clien
 import { NextResponse } from "next/server";
 //import { Readable } from "stream";
 
-export const revalidate = 1;
-
+export const dynamic = 'force-dynamic'
 const s3 = new S3Client({
   region: process.env.AWS_REGION,
   credentials: {
