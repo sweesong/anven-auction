@@ -4,6 +4,8 @@ import XLSX from 'xlsx';
 import { fetchAllProperties } from '@/lib/actions';
 import { NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic'
+
 const propertiesColumns = [
   'xx',
   'id',
@@ -45,15 +47,19 @@ type properties = {
 async function extractNewProperties(): Promise<{ [key: string]: properties }> {
   const { blobs } = await list({ prefix: 'auction_listing/' });
   const latestXlsxURL = blobs.sort((a,b) => (new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime()))[0].url;
+  console.log("latestXlsxURL:" + latestXlsxURL);
   const data = await (await fetch(latestXlsxURL)).arrayBuffer();
   const workbook = XLSX.read(data);
   const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-  console.log(workbook.SheetNames[0]);
+  console.log("sheet name:" + workbook.SheetNames[0]);
 
   let fetchProperties: xlsxProperties[] = XLSX.utils.sheet_to_json(worksheet, { header: propertiesColumns });
   let sliceProperties = fetchProperties.slice(3).map(({ xx, ...propertiesNoHeader }) => propertiesNoHeader);
 
-  console.log(data);
+  console.log("sliceProperties" + sliceProperties);
+
+  console.log("sliceProperties[0]" + sliceProperties[0]);
+  
   const retProperties = sliceProperties.reduce((tmpProperties, { id, address, size, ...property }) => {
     const [actualAddress, extra_info] = address.split('\n');
     let actualEstimatePrice = null;
