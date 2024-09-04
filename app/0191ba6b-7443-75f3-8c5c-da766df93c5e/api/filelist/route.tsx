@@ -12,7 +12,7 @@ const s3 = new S3Client({
 
 
 export async function GET(request: Request) {
-  const bucketName = "anvenauction";
+  const bucketName = process.env.AWS_S3_BUCKET_NAME;
   const prefix = "auction_listing/"; // If you want to filter files by a prefix
 
   try {
