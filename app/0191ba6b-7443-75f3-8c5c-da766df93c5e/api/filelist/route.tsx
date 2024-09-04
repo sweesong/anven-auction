@@ -8,7 +8,7 @@ export async function GET(request: Request): Promise<NextResponse> {
 
     return NextResponse.json(uploadedFileLlist,{
         headers: {
-            'Cache-Control': 'public, s-maxage=1',
+            'Cache-Control': 'no-cache, no-store, max-age=0, must-revalidate',
             'CDN-Cache-Control': 'public, s-maxage=60',
             'Vercel-CDN-Cache-Control': 'public, s-maxage=3600',
           },
