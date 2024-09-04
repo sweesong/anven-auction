@@ -15,9 +15,6 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/table';
-import { RefreshCwIcon } from 'lucide-react';
-import { Button } from '@nextui-org/button';
-import { Link } from '@nextui-org/link';
 
 const fetchFileList = async () => {
     const response = await fetch('/0191ba6b-7443-75f3-8c5c-da766df93c5e/api/filelist');

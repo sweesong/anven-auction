@@ -2,8 +2,7 @@
 const nextConfig = {
     experimental: {
         missingSuspenseWithCSRBailout: false,
-      },
-    swcMinify: false,
+      }
 }
 
 module.exports = nextConfig

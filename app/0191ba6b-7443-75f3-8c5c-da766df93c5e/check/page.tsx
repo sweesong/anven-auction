@@ -68,14 +68,15 @@ async function extractNewProperties(): Promise<{ [key: string]: properties }> {
 
   latestXlsxURL = blobs.sort((a,b) => (new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime()))[0].url;
 
+  latestXlsxURL = "https://anvenauction.s3.ap-southeast-2.amazonaws.com/Auction_Listing_2024_08_31.xlsx";
+
+  console.log("latestXlsxURL: " + latestXlsxURL);
+
   const data = await (await fetch(latestXlsxURL)).arrayBuffer();
 
   const workbook = XLSX.read(data);
 
   const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-
-  console.log(latestXlsxURL);
-  console.log(workbook.SheetNames[0]);
 
   let fetchProperties: xlsxProperties[] = XLSX.utils.sheet_to_json(worksheet, { header: propertiesColumns });
 
@@ -158,10 +159,6 @@ async function extractDBProperties(): Promise<{ [key: string]: properties }> {
 
 export default async function CheckPage() {
 
-  return (
-    <div>OH MY GOD</div>
-  )
-  /* 
   const sheetProperties = await extractNewProperties() || null;
   const dbProperties = await extractDBProperties();
 
@@ -231,5 +228,5 @@ export default async function CheckPage() {
         />
       </Suspense>
     </div>
-  ) */
+  )
 }
