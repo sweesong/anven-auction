@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 //import { Readable } from "stream";
 
 export const dynamic = 'force-dynamic'
+
 const s3 = new S3Client({
   region: process.env.AWS_REGION,
   credentials: {
