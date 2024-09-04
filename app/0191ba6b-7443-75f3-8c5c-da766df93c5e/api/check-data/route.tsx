@@ -4,8 +4,6 @@ import XLSX from 'xlsx';
 import { fetchAllProperties } from '@/lib/actions';
 import { NextResponse } from 'next/server';
 
-export const dynamic = 'force-dynamic'
-
 const propertiesColumns = [
   'xx',
   'id',
