@@ -12,6 +12,7 @@
 		"seed-from-xlsx": "node prisma/seed-from-xlsx.js"
 	},
 	"dependencies": {
+		"@aws-sdk/client-s3": "^3.637.0",
 		"@nextui-org/accordion": "^2.0.38",
 		"@nextui-org/button": "2.0.37",
 		"@nextui-org/card": "^2.0.33",

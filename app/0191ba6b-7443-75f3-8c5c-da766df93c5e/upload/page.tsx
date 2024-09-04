@@ -70,9 +70,9 @@ export default function UploadPage() {
                                 {filelist.map((file: any, key: any) => (
                                     <TableRow className="text-xs" key={key}>
                                     <TableCell>{key+1}</TableCell>
-                                    <TableCell><a href={file.downloadUrl}>{file.pathname}</a></TableCell>
-                                    <TableCell>{Math.ceil(file.size/1024)}</TableCell>
-                                    <TableCell>{new Date(file.uploadedAt).toLocaleDateString() + " "+ new Date(file.uploadedAt).toLocaleTimeString()}</TableCell>
+                                    <TableCell>{file.Key}</TableCell>
+                                    <TableCell>{Math.ceil(file.Size/1024)}</TableCell>
+                                    <TableCell>{new Date(file.LastModified).toLocaleDateString() + " "+ new Date(file.LastModified).toLocaleTimeString()}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
