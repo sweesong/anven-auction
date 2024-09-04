@@ -155,7 +155,11 @@ async function extractDBProperties(): Promise<{ [key: string]: properties }> {
 
 
 export default async function CheckPage() {
-  
+
+  return (
+    <div>OH MY GOD</div>
+  )
+  /* 
   const sheetProperties = await extractNewProperties() || null;
   const dbProperties = await extractDBProperties();
 
@@ -225,5 +229,5 @@ export default async function CheckPage() {
         />
       </Suspense>
     </div>
-  )
+  ) */
 }
