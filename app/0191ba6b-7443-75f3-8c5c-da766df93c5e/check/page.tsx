@@ -3,34 +3,9 @@ import { list } from "@vercel/blob";
 import XLSX from "xlsx";
 import { fetchAllProperties } from "@/lib/actions";
 import ImportTable from "@/components/import-table";
-import Upload, { UploadProps } from "antd/es/upload";
-import message from "antd/es/message";
 import MenuDashboard from "@/components/menu-dashboard";
 
 let latestXlsxURL: string="";
-
-const props: UploadProps = {
-  name: 'file',
-  action: 'https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload',
-  maxCount: 1,
-  listType: "picture",
-  headers: {
-    authorization: 'authorization-text',
-  },
-  onChange(info) {
-    console.log(info);
-
-    if (info.file.status !== 'uploading') {
-      console.log(info.file, info.fileList);
-    }
-    if (info.file.status === 'done') {
-      message.success(`${info.file.name} file uploaded successfully`);
-    } else if (info.file.status === 'error') {
-      console.log("error failed");
-      extractNewProperties();
-    }
-  },
-};
 
 const propertiesColumns = [
   'xx',
@@ -103,7 +78,7 @@ async function extractNewProperties(): Promise<{ [key: string]: properties }> {
 
   const retProperties = sliceProperties.reduce((tmpProperties, { id, address, size, ...property }) => {
 
-    const [actualAddress, extra_info] = address.split('\n');
+    const [actualAddress, extra_info] = address?.split('\n');
     let actualEstimatePrice = null;
     let actualExtraInfo = null;
     let actualTitle = null;
@@ -126,7 +101,7 @@ async function extractNewProperties(): Promise<{ [key: string]: properties }> {
 
     actualExtraInfo = extra_info;
 
-    actualTitle = actualAddress.split(',')[0];
+    actualTitle = actualAddress?.split(',')[0];
 
     if (extra_info != null && (extra_info.toLowerCase().startsWith("estimated market price:") || extra_info.toLowerCase().startsWith("estimated market value:"))) {
       let tmpEstimatePrice = extra_info.toLowerCase().replace("estimated market price:", "").replace("estimated market value:", "").trim();
