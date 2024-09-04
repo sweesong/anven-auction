@@ -46,7 +46,7 @@ async function extractNewProperties(): Promise<{ [key: string]: properties }> {
   const { blobs } = await list({ prefix: 'auction_listing/' });
   const latestXlsxURL = blobs.sort((a,b) => (new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime()))[0].url;
   console.log("latestXlsxURL:" + latestXlsxURL);
-  const data = await (await fetch(latestXlsxURL)).arrayBuffer();
+  const data = await (await fetch("https://anven-auction.vercel.app/Auction_Listing_2024_08_31.xlsx")).arrayBuffer();
   const workbook = XLSX.read(data);
   const worksheet = workbook.Sheets[workbook.SheetNames[0]];
   console.log("sheet name:" + workbook.SheetNames[0]);
