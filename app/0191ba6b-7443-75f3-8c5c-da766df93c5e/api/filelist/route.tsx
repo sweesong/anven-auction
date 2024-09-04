@@ -11,6 +11,7 @@ export async function GET(request: Request): Promise<NextResponse> {
             'Cache-Control': 'no-cache, no-store, max-age=0, must-revalidate',
             'CDN-Cache-Control': 'no-cache, no-store, max-age=0, must-revalidate',
             'Vercel-CDN-Cache-Control': 'no-cache, no-store, max-age=0, must-revalidate',
+            'X-Vercel-Cache': 'bypass'
           },
     });
 }
