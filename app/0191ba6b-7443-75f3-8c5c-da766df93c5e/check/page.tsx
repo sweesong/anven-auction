@@ -238,7 +238,7 @@ export default async function CheckPage() {
     <div className="min-h-screen flex flex-col gap-4">
       <MenuDashboard menu="check" />
       <Suspense fallback={<div>Loading..</div>}>
-        <div>The following result checks against latest uploaded xlsx file: <span className="font-bold">{decodeURIComponent(latestXlsxURL.split('/')[4])}</span></div>
+        <div>The following result checks against latest uploaded xlsx file: <span className="font-bold">{latestXlsxURL}</span></div>
         <ImportTable
           newProperties={newData.sort((a, b) => parseInt(a.id.slice(2)) - parseInt(b.id.slice(2)))}
           updateProperties={updateData.sort((a, b) => parseInt(a.id.slice(2)) - parseInt(b.id.slice(2)))}
