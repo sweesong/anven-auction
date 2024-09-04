@@ -54,7 +54,7 @@ export default function UploadPage() {
             <div className='flex flex-col gap-4'>
                 <div className='flex flex-row gap-2 items-center'>
                 <UploadFile onUploadSuccess={refreshData} />
-                <Link size="sm" onClick={refreshData}>
+                <Link size="sm" onPress={refreshData}>
                 <RefreshCwIcon className='text-gray-700'/>
                 </Link>
                 </div>
