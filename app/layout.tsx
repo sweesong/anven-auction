@@ -43,15 +43,7 @@ export default function RootLayout({
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
           <div className="flex flex-col h-screen pt-4">
-            <Navbar />
-            <main className="container mx-auto max-w-[1140px] pt-4 px-6 flex-grow">
-              {children}
-            </main>
-            <Spacer y={10} />
-            <footer className="w-full flex items-center justify-center mt-10 py-3 gap-1">
-                <span className="text-default-600">Powered by</span>
-                <p className="text-primary">Anven Foo</p>
-            </footer>
+            {children}
           </div>
         </Providers>
       </body>

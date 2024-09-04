@@ -1,4 +1,5 @@
 import prisma from "./db";
+import { format } from 'date-fns';
 
 // Define property type mappings
 const propertyTypeMappings: Record<string, string[]> = {
@@ -150,6 +151,45 @@ export async function fetchProperties(
     properties,
   };
 }
+
+export async function fetchAllProperties(){
+  
+  delay(5000);
+  
+  const [totalProperties, tmpProperties] = await Promise.all([
+    prisma.properties.count(),
+    prisma.properties.findMany({
+      select: {
+        id: true,
+        title: true,
+        auction_date: true, 
+        city: true,
+        address: true,
+        reserve_price: true,
+        estimate_price: true,
+        size: true,
+        type: true,
+        tenure: true,
+        extra_info: true,
+      },
+    }),
+  ]);
+
+  const properties = tmpProperties.map(property => ({
+    ...property,
+    auction_date: format(property.auction_date, 'dd-MM-yyyy'), // Format as 'MM/DD/YYYY HH:MM:SS'
+  }));
+
+  return {
+    totalProperties,
+    properties,
+  };
+}
+
+fetchAllProperties().catch(e => console.error(e)).finally(async () => {
+  console.log("disconnect")
+  await prisma.$disconnect();
+});
 
 
 export default prisma;
