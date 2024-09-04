@@ -8,10 +8,8 @@ export async function GET(request: Request): Promise<NextResponse> {
 
     return NextResponse.json(uploadedFileLlist,{
         headers: {
-            'Cache-Control': 'no-cache, no-store, max-age=0, must-revalidate',
-            'CDN-Cache-Control': 'no-cache, no-store, max-age=0, must-revalidate',
-            'Vercel-CDN-Cache-Control': 'no-cache, no-store, max-age=0, must-revalidate',
-            'X-Vercel-Cache': 'bypass'
+            'Cache-Control': 's-maxage=1, stale-while-revalidate=59',
+            'pragma': 'no-cache'
           },
     });
 }
