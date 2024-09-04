@@ -66,7 +66,7 @@ async function extractNewProperties(): Promise<{ [key: string]: properties }> {
 
   latestXlsxURL = blobs.sort((a,b) => (new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime()))[0].url;
 
-  latestXlsxURL = "https://anvenauction.s3.ap-southeast-2.amazonaws.com/Auction_Listing_2024_08_31.xlsx";
+  latestXlsxURL = "https://anvenauction.s3.ap-southeast-2.amazonaws.com/auction_listing/Auction_Listing_2024_08_31.xlsx";
 
   console.log("latestXlsxURL: " + latestXlsxURL);
 
