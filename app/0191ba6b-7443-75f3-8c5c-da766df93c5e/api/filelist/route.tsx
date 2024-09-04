@@ -1,6 +1,8 @@
 import { S3Client, GetObjectCommand, ListObjectsV2Command } from "@aws-sdk/client-s3";
 import { NextResponse } from "next/server";
-import { Readable } from "stream";
+//import { Readable } from "stream";
+
+export const revalidate = 1;
 
 const s3 = new S3Client({
   region: process.env.AWS_REGION,
