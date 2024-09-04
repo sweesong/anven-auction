@@ -5,6 +5,8 @@ import { fetchAllProperties } from "@/lib/actions";
 import ImportTable from "@/components/import-table";
 import MenuDashboard from "@/components/menu-dashboard";
 
+export const dynamic = 'force-dynamic'
+
 let latestXlsxURL: string="";
 
 const propertiesColumns = [

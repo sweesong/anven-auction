@@ -54,9 +54,6 @@ export default function UploadPage() {
             <div className='flex flex-col gap-4'>
                 <div className='flex flex-row gap-2 items-center'>
                 <UploadFile onUploadSuccess={refreshData} />
-                <Link size="sm" onPress={refreshData}>
-                <RefreshCwIcon className='text-gray-700'/>
-                </Link>
                 </div>
                 <div className='flex flex-col'>
                     {
@@ -72,7 +69,7 @@ export default function UploadPage() {
                                     <TableHead key="uploadedat">Uploaded At</TableHead>
                                 </TableRow>
                             </TableHeader>
-                            <TableBody className="overflow-y-auto h-[500px] ">
+                            <TableBody>
                                 {filelist.map((file: any, key: any) => (
                                     <TableRow className="text-xs" key={key}>
                                     <TableCell>{key+1}</TableCell>
