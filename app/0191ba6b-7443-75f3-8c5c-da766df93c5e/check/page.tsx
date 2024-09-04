@@ -72,13 +72,16 @@ async function extractNewProperties(): Promise<{ [key: string]: properties }> {
 
   const worksheet = workbook.Sheets[workbook.SheetNames[0]];
 
+  console.log(latestXlsxURL);
+  console.log(workbook.SheetNames[0]);
+
   let fetchProperties: xlsxProperties[] = XLSX.utils.sheet_to_json(worksheet, { header: propertiesColumns });
 
   let sliceProperties = fetchProperties.slice(3).map(({ xx, ...propertiesNoHeader }) => propertiesNoHeader);
 
   const retProperties = sliceProperties.reduce((tmpProperties, { id, address, size, ...property }) => {
 
-    const [actualAddress, extra_info] = address?.split('\n');
+    const [actualAddress, extra_info] = address.split('\n');
     let actualEstimatePrice = null;
     let actualExtraInfo = null;
     let actualTitle = null;
@@ -101,7 +104,7 @@ async function extractNewProperties(): Promise<{ [key: string]: properties }> {
 
     actualExtraInfo = extra_info;
 
-    actualTitle = actualAddress?.split(',')[0];
+    actualTitle = actualAddress.split(',')[0];
 
     if (extra_info != null && (extra_info.toLowerCase().startsWith("estimated market price:") || extra_info.toLowerCase().startsWith("estimated market value:"))) {
       let tmpEstimatePrice = extra_info.toLowerCase().replace("estimated market price:", "").replace("estimated market value:", "").trim();
@@ -152,11 +155,7 @@ async function extractDBProperties(): Promise<{ [key: string]: properties }> {
 
 
 export default async function CheckPage() {
-
-  return (
-    <div>OH NO</div>
-  )
-  /* 
+  
   const sheetProperties = await extractNewProperties() || null;
   const dbProperties = await extractDBProperties();
 
@@ -217,7 +216,7 @@ export default async function CheckPage() {
     <div className="min-h-screen flex flex-col gap-4">
       <MenuDashboard menu="check" />
       <Suspense fallback={<div>Loading..</div>}>
-        <div>The following result checks against latest uploaded xlsx file: <span className="font-bold">{latestXlsxURL}</span></div>
+        <div>The following result checks against latest uploaded xlsx file: <span className="font-bold">{latestXlsxURL.split('/')[4]}</span></div>
         <ImportTable
           newProperties={newData.sort((a, b) => parseInt(a.id.slice(2)) - parseInt(b.id.slice(2)))}
           updateProperties={updateData.sort((a, b) => parseInt(a.id.slice(2)) - parseInt(b.id.slice(2)))}
@@ -226,5 +225,5 @@ export default async function CheckPage() {
         />
       </Suspense>
     </div>
-  ) */
+  )
 }
