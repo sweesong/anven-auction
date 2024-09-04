@@ -46,8 +46,7 @@ export default function UploadPage() {
 
 
     return (
-        <div>OH NO</div>
-       /*  <section className='flex flex-col gap-5'>
+        <section className='flex flex-col gap-5'>
             <MenuDashboard menu="upload" />
             <div className='flex flex-col gap-4'>
                 <UploadFile onUploadSuccess={refreshData} />
@@ -80,6 +79,6 @@ export default function UploadPage() {
                     }
                 </div>
             </div>
-        </section> */
+        </section>
     );
 }
