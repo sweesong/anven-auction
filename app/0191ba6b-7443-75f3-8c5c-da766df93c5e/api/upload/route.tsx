@@ -52,7 +52,6 @@ export async function POST(request: Request): Promise<NextResponse> {
       // Generate a public URL for the uploaded file
       const fileUrl = `https://${bucketName}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
 
-      console.log(fileUrl);
       return NextResponse.json({
         message: "File uploaded successfully",
         url: fileUrl,

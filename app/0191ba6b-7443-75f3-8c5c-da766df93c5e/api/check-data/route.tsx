@@ -45,19 +45,13 @@ type properties = {
 async function extractNewProperties(): Promise<{ [key: string]: properties }> {
   const { blobs } = await list({ prefix: 'auction_listing/' });
   const latestXlsxURL = blobs.sort((a,b) => (new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime()))[0].url;
-  console.log("latestXlsxURL:" + latestXlsxURL);
   const data = await (await fetch("https://anvenauction.s3.ap-southeast-2.amazonaws.com/auction_listing/Auction_Listing_2024_08_31.xlsx")).arrayBuffer();
   const workbook = XLSX.read(data);
   const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-  console.log("sheet name:" + workbook.SheetNames[0]);
 
   let fetchProperties: xlsxProperties[] = XLSX.utils.sheet_to_json(worksheet, { header: propertiesColumns });
   let sliceProperties = fetchProperties.slice(3).map(({ xx, ...propertiesNoHeader }) => propertiesNoHeader);
 
-  console.log("sliceProperties" + sliceProperties);
-
-  console.log("sliceProperties[0]" + sliceProperties[0]);
-  
   const retProperties = sliceProperties.reduce((tmpProperties, { id, address, size, ...property }) => {
     const [actualAddress, extra_info] = address.split('\n');
     let actualEstimatePrice = null;
@@ -137,11 +131,8 @@ function deepDiff(newObj: any, oldObj: any): any {
 
 export async function GET(request: Request): Promise<NextResponse> {
   //try {
-    console.log("hello");
     const sheetProperties = await extractNewProperties();
-    console.log("hello1");
     const dbProperties = await extractDBProperties();
-    console.log("hello2");
 
     let updateDiff: { [key: string]: any } = {};
 
