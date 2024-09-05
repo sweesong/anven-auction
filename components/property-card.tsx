@@ -163,7 +163,7 @@ export function PropertyCardList(property: PropertyCardProps) {
                         </div>
                         <div className="flex flex-row text-xs text-gray-400 gap-1">
                             {property.estimate_price != null 
-                            ? (<span className="flex flex-row gap-1 text-red-700"><CalculatorIcon size={14} /> Est. Market Price: RM {property.estimate_price.toLocaleString('en-US')}</span>) : ""
+                            ? (<span className="flex flex-row gap-1 text-red-700 font-semibold"><CalculatorIcon size={14} /> Est. Market Price: RM {property.estimate_price.toLocaleString('en-US')}</span>) : ""
                             }
                         </div>
                         <div className="flex gap-1 items-center">
