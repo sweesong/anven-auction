@@ -47,7 +47,7 @@ export function PropertyCardGrid(property: PropertyCardProps) {
     return (
         <Card className="w-full">
             <CardHeader className="absolute z-10 top-1 flex-col !items-start">
-                <Chip variant="shadow" color="warning">{property.type}</Chip>
+                <Chip size="sm" variant="shadow" color="warning"><div className="font-semibold">{property.type}</div></Chip>
             </CardHeader>
             <Image
                 alt={"image:#" + property.id.toString()}
@@ -60,7 +60,7 @@ export function PropertyCardGrid(property: PropertyCardProps) {
                 <div className="flex flex-col">
                     <div className="flex-1 flex flex-col justify-between">
                         <div className="flex flex-col p-1 mt-auto min-h-[80px] gap-1">
-                            <span className="text-xs text-gray-400">#{property.id}</span>
+                            <span className="flex flex-row items-center text-xs text-gray-500 gap-1">#{property.id} <Link className="text-sm text-green-600" isExternal showAnchorIcon href={whatsappString} anchorIcon={<WhatsAppIcon size={15} />}></Link></span>
                             <div className="font-bold text-gray-800">{property.title}</div>
                         </div>
                         <div className="flex-1 flex-col p-1 mt-auto min-h-[40px] gap-1">
@@ -73,7 +73,7 @@ export function PropertyCardGrid(property: PropertyCardProps) {
                                 </div>
                                 <div className="flex flex-row text-xs text-gray-400 gap-1">
                                     {property.estimate_price != null 
-                                    ? (<span className="flex flex-row gap-1"><CalculatorIcon size={14} /> Est. Market Price: RM {property.estimate_price.toLocaleString('en-US')}</span>)
+                                    ? (<span className="flex flex-row gap-1 text-red-700"><CalculatorIcon size={14} /> Est. Market Price: RM {property.estimate_price.toLocaleString('en-US')}</span>)
                                     : (<Spacer y={4} />)
                                     }
                                 </div>
@@ -85,7 +85,7 @@ export function PropertyCardGrid(property: PropertyCardProps) {
                                 </div>
                             </div>
                             <div className="text-gray-600 pt-4 text-xs text-gray-400">
-                                [<Link className="text-sm text-green-600" isExternal showAnchorIcon href={whatsappString} anchorIcon={<WhatsAppIcon size={12} />}>Whatsapp Me<Spacer x={1} /></Link>], {property.address}
+                                [<Link className="text-sm text-green-600" isExternal showAnchorIcon href={whatsappString} anchorIcon={<WhatsAppIcon size={12} />}>Whatsapp Me<Spacer x={1} /></Link>], <span className="font-bold">{property.address}</span>
                             </div>
                         </div>
                     </div>
@@ -122,7 +122,7 @@ export function PropertyCardList(property: PropertyCardProps) {
             shadow="sm"
         >
             <CardHeader className="absolute z-10 top-1 flex-col !items-start">
-                <Chip variant="shadow" color="warning">{property.type}</Chip>
+                <Chip size="sm" variant="shadow" color="warning"><div className="font-semibold">{property.type}</div></Chip>
             </CardHeader>
             <CardBody>
                 <div className="grid grid-cols-6 md:grid-cols-12 gap-6 md:gap-4 items-center justify-center">
@@ -141,9 +141,9 @@ export function PropertyCardList(property: PropertyCardProps) {
                     <div className="flex flex-col col-span-6 md:col-span-9 gap-2">
                         <div className="flex justify-between items-start">
                             <div className="flex flex-col">
-                                <span className="text-xs text-gray-400">#{property.id}</span>
+                            <span className="flex flex-row items-center text-xs text-gray-500 gap-1">#{property.id} <Link className="text-sm text-green-600" isExternal showAnchorIcon href={whatsappString} anchorIcon={<WhatsAppIcon size={15} />}></Link></span>
                                 <h3 className="font-semibold text-foreground/90">{property.title}</h3>
-                                <p className="text-small text-foreground/80">[<Link className="text-sm text-green-600" isExternal showAnchorIcon href={whatsappString} anchorIcon={<WhatsAppIcon size={12}/>}>Whatsapp Me<Spacer x={1} /></Link>], {property.address}</p>
+                                <p className="text-small text-foreground/80">[<Link className="text-sm text-green-600" isExternal showAnchorIcon href={whatsappString} anchorIcon={<WhatsAppIcon size={12}/>}>Whatsapp Me<Spacer x={1} /></Link>], <span className="font-semibold">{property.address}</span></p>
                                 <div className="flex flex-row items-center gap-2">
                                     <div className="font-bold text-xl mt-2">
                                         RM {property.reserve_price.toLocaleString("en-US")}
@@ -154,7 +154,7 @@ export function PropertyCardList(property: PropertyCardProps) {
                         </div>
                         <div className="flex flex-row text-xs text-gray-400 gap-1">
                             {property.estimate_price != null 
-                            ? (<span className="flex flex-row gap-1"><CalculatorIcon size={14} /> Est. Market Price: RM {property.estimate_price.toLocaleString('en-US')}</span>) : ""
+                            ? (<span className="flex flex-row gap-1 text-red-700"><CalculatorIcon size={14} /> Est. Market Price: RM {property.estimate_price.toLocaleString('en-US')}</span>) : ""
                             }
                         </div>
                         <div className="flex gap-1 items-center">

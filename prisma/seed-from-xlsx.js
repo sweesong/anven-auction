@@ -67,7 +67,23 @@ const main = async () => {
         }
       }
 
-      const title = address.split(',')[0];
+      let tmpAddress = address.split(',')
+      let title = tmpAddress[0]; //by default use first part
+      
+      const words = ["jalan", "lorong"];
+
+      if(words.some((word) => title.toLowerCase().includes(word.toLowerCase())))
+      {
+        if(tmpAddress.length>1){
+          title = tmpAddress[tmpAddress.length-2].trim() + ", " + tmpAddress[tmpAddress.length-1].trim()
+
+          const checkPostcode = title.split(/\s+/);
+
+          if (/^\d+$/.test(checkPostcode[0])) {
+            title = title.replace(checkPostcode[0],"").trim();
+          }
+        }
+      }
 
       return {
         id: getCellValue(row, 2),
