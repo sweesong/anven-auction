@@ -1,4 +1,3 @@
-import { Revenue } from './types';
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -79,3 +78,8 @@ export const formatDateToStr = (rawDate: Date): string => {
 
   return formattedDate;
 };
+
+export function parseDate(dateString: string) {
+  const [day, month, year] = dateString.toString().split('-');
+  return new Date(`${year}-${month}-${day}`);
+}
