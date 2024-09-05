@@ -46,8 +46,13 @@ export function PropertyCardGrid(property: PropertyCardProps) {
 
     return (
         <Card className="w-full">
-            <CardHeader className="absolute z-10 top-1 flex-col !items-start">
-                <Chip size="sm" variant="shadow" color="warning"><div className="font-semibold">{property.type}</div></Chip>
+            <CardHeader className="absolute z-10 flex-col !items-start">
+                <Chip size="sm" variant="shadow" color="warning"
+                classNames={{
+                    base: "bg-yellow-500 border-small border-white/50 shadow-gray-500/30",
+                    content: "drop-shadow shadow-black text-gray-700",
+                  }}
+                  ><div className="font-semibold">{property.type}</div></Chip>
             </CardHeader>
             <Image
                 alt={"image:#" + property.id.toString()}
@@ -121,8 +126,12 @@ export function PropertyCardList(property: PropertyCardProps) {
             className="border-none bg-background/60 dark:bg-default-100/50"
             shadow="sm"
         >
-            <CardHeader className="absolute z-10 top-1 flex-col !items-start">
-                <Chip size="sm" variant="shadow" color="warning"><div className="font-semibold">{property.type}</div></Chip>
+            <CardHeader className="absolute z-10 flex-col !items-start">
+                <Chip size="sm" variant="shadow" color="warning"
+                classNames={{
+                    base: "bg-yellow-500 border-small border-white/50 shadow-gray-500/30",
+                    content: "drop-shadow shadow-black text-gray-700",
+                  }}><div className="font-semibold">{property.type}</div></Chip>
             </CardHeader>
             <CardBody>
                 <div className="grid grid-cols-6 md:grid-cols-12 gap-6 md:gap-4 items-center justify-center">
