@@ -144,7 +144,7 @@ export async function fetchProperties(
     }),
   ]);
 
-  console.log("Total Properties Retrieved=" + totalProperties);
+  //console.log("Total Properties Retrieved=" + totalProperties);
 
   return {
     totalProperties,

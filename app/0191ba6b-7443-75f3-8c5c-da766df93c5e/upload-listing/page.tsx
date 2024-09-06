@@ -1,13 +1,110 @@
 'use client';
 
-import { properties, propertiesColumns, xlsxProperties } from "@/lib/types"; 
+import { properties, propertiesColumns, xlsxProperties } from "@/lib/types";
 import { Suspense, useState } from 'react';
 import { Button, message, Popconfirm, Upload, Spin } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import * as XLSX from 'xlsx';
 import { GitCompareIcon, SaveAllIcon } from "lucide-react";
-import UploadSheetTable from "@/components/upload-sheet-table";
+//import UploadSheetTable from "@/components/upload-sheet-table";
 import GenerateDiffTables from "@/components/generate-diff-tables";
+import UpdateSheetAntTable from "@/components/upload-sheet-ant-table";
+
+
+type ValidationErrors = {
+    [id: string]: {
+        title?: string[];
+        auction_date?: string[];
+        city?: string[];
+        address?: string[];
+        reserve_price?: string[];
+        estimate_price?: string[];
+        extra_info?: string[];
+        size?: string[];
+        type?: string[];
+        tenure?: string[];
+    };
+};
+
+function isValidDate(dateString: string): boolean {
+    const regex = /^\d{2}-\d{2}-\d{4}$/;
+    if (!dateString.match(regex)) return false;
+
+    const [day, month, year] = dateString.split('-').map(Number);
+
+    // Check if month is between 1 and 12
+    if (month < 1 || month > 12) return false;
+
+    // Check if day is valid for the given month
+    const daysInMonth = new Date(year, month, 0).getDate();
+    if (day < 1 || day > daysInMonth) return false;
+
+    return true;
+}
+
+function validateProperties(propertiesObject: { [id: string]: properties }): ValidationErrors {
+    const errors: ValidationErrors = {};
+    
+    // Validate each property
+    for (const [id, property] of Object.entries(propertiesObject)) {
+        const fieldErrors: {
+            title?: string[];
+            auction_date?: string[];
+            city?: string[];
+            address?: string[];
+            reserve_price?: string[];
+            estimate_price?: string[];
+            extra_info?: string[];
+            size?: string[];
+            type?: string[];
+            tenure?: string[];
+        } = {};
+
+        // Validate each field
+        if (!property.title) {
+            fieldErrors.title = fieldErrors.title || [];
+            fieldErrors.title.push("Title is required");
+        }
+
+        if (!property.city) {
+            fieldErrors.city = fieldErrors.city || [];
+            fieldErrors.city.push("City is required");
+        }
+
+        if (!property.address) {
+            fieldErrors.address = fieldErrors.address || [];
+            fieldErrors.address.push("Address is required");
+        }
+
+        if (!isValidDate(property.auction_date)) {
+            fieldErrors.auction_date = fieldErrors.auction_date || [];
+            fieldErrors.auction_date.push("Invalid date format");
+        }
+
+        if (property.reserve_price < 0) {
+            fieldErrors.reserve_price = fieldErrors.reserve_price || [];
+            fieldErrors.reserve_price.push("Reserve price must be more than 0");
+        }
+
+        if (property.size <= -1) {
+            fieldErrors.size = fieldErrors.size || [];
+            fieldErrors
+                .size.push("Size must be 0 or above");
+        }
+
+        if (!property.type) {
+            fieldErrors.type = fieldErrors.type || [];
+            fieldErrors.type.push("Type is required");
+        }
+
+        // Add fieldErrors to errors object if there are any errors
+        if (Object.keys(fieldErrors).length > 0) {
+            errors[id] = fieldErrors;
+        }
+    }
+
+    return errors;
+}
 
 function deepDiff(newObj: any, oldObj: any): any {
     const diff: any = {};
@@ -25,6 +122,7 @@ export default function UploadListing() {
     const [uploadFilename, setUploadFilename] = useState<string>();
 
     const [sheetData, setSheetData] = useState<any>(); //from spreadsheet
+    const [invalidData, setInvalidData] = useState<any>();
 
     const [newListing, setNewListing] = useState<properties[]>([]); //after compare, to be insert listing
     const [updListing, setUpdListing] = useState<properties[]>([]); //after compare, to be update listing
@@ -34,6 +132,7 @@ export default function UploadListing() {
     const [isLoading, setLoading] = useState(false);
     const [isCanCompare, setCanCompare] = useState(false);
     const [isCanCommit, setCanCommit] = useState(false);
+    const [isDataValid, setDataValid] = useState(false);
 
 
     const handleFileRead = (file: File) => {
@@ -49,13 +148,54 @@ export default function UploadListing() {
             setUploadFilename(file.name);
 
             reader.onload = (e: ProgressEvent<FileReader>) => {
+                let validHeaderFormat = false;
                 const data = e.target?.result;
                 if (data) {
                     // Parse the Excel file data using SheetJS
                     const workbook = XLSX.read(data, { type: 'binary' });
                     const firstSheetName = workbook.SheetNames[0];
                     const worksheet = workbook.Sheets[firstSheetName];
-                    const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+                    if (!worksheet) {
+                        return false;
+                    }
+                    //verify if the xlsx is valid format by checking the header at 3rd row
+                    const expectedHeaders = ['new', 'id', 'auction date', 'city', 'address']; // Replace with your expected headers
+
+                    // Get the range for the 3rd row
+                    const ref = worksheet['!ref'];
+                    if (ref) {
+                        const range = XLSX.utils.decode_range(ref);
+                        const thirdRowCells = [];
+                        for (let col = range.s.c; col <= 4; col++) {
+                            const cellAddress = { c: col, r: 3 }; // 2 represents the 3rd row (0-based index)
+                            const cellRef = XLSX.utils.encode_cell(cellAddress);
+                            if (worksheet[cellRef]) {
+                                thirdRowCells.push(worksheet[cellRef].v);
+                            } else {
+                                thirdRowCells.push(null); // Or use an empty string if preferred
+                            }
+                        }
+
+                        console.log(thirdRowCells);
+
+                        // Check if the 3rd row headers match the expected headers
+                        validHeaderFormat = thirdRowCells.every((value, index) => value?.toLowerCase() === expectedHeaders[index].toLowerCase());
+                        //console.log('Headers match:', validHeaderFormat);
+
+                    }
+
+                    if (!validHeaderFormat) {
+                        setLoading(false); // Start loading
+                        setCanCompare(false);
+                        setCanCommit(false);
+                        setSheetData(null);
+
+                        message.error("Header format is not expected. Possibly wrong file. Please check the file manually.")
+                        return false;
+                    }
+
+
                     let fetchProperties: xlsxProperties[] = XLSX.utils.sheet_to_json(worksheet, { header: propertiesColumns });
                     let sliceProperties = fetchProperties.slice(3).map(({ xx, ...propertiesNoHeader }) => propertiesNoHeader);
 
@@ -85,16 +225,15 @@ export default function UploadListing() {
 
                         const words = ["jalan", "lorong"];
 
-                        if(words.some((word) => actualTitle.toLowerCase().includes(word.toLowerCase())))
-                        {
-                            if(tmpAddress.length>1){
-                                actualTitle = tmpAddress[tmpAddress.length-2].trim() + ", " + tmpAddress[tmpAddress.length-1].trim()
+                        if (words.some((word) => actualTitle.toLowerCase().includes(word.toLowerCase()))) {
+                            if (tmpAddress.length > 1) {
+                                actualTitle = tmpAddress[tmpAddress.length - 2].trim() + ", " + tmpAddress[tmpAddress.length - 1].trim()
 
-                            const checkPostcode = actualTitle.split(/\s+/);
+                                const checkPostcode = actualTitle.split(/\s+/);
 
-                            if (/^\d+$/.test(checkPostcode[0])) {
-                                actualTitle = actualTitle.replace(checkPostcode[0],"").trim();
-                            }
+                                if (/^\d+$/.test(checkPostcode[0])) {
+                                    actualTitle = actualTitle.replace(checkPostcode[0], "").trim();
+                                }
                             }
                         }
 
@@ -124,16 +263,27 @@ export default function UploadListing() {
                         return tmpProperties;
                     }, {} as { [key: string]: properties });
 
-                    
-                    setSheetData(retProperties);
-                    setCanCompare(true);
-                    setCanCommit(false);
+                    const validationErrors = validateProperties(retProperties);
+
+                    if (Object.keys(validationErrors).length>0) {
+                        setInvalidData(validationErrors);
+                        setDataValid(false);
+                        setSheetData(null);
+                        setCanCompare(false);
+                        setCanCommit(false);
+                    } else {
+                        setSheetData(retProperties);
+                        setCanCompare(true);
+                        setCanCommit(false);
+                        setDataValid(true);
+                    }
                 }
             };
 
         } catch (error) {
             setCanCompare(false);
             setCanCommit(false);
+            setSheetData(null);
             message.error('Error loading the file. Please check if the file is valid.');
         } finally {
             setLoading(false);
@@ -165,17 +315,17 @@ export default function UploadListing() {
 
             const newSheetData: { [key: string]: Omit<properties, 'id'> } = Object.entries(sheetData).reduce(
                 (acc, [key, value]) => {
-                  const { id, ...rest } = value as properties; // Explicitly assert the type
-                  acc[key] = rest; // Assign the rest of the properties without 'sid'
-                  return acc;
+                    const { id, ...rest } = value as properties; // Explicitly assert the type
+                    acc[key] = rest; // Assign the rest of the properties without 'sid'
+                    return acc;
                 },
                 {} as { [key: string]: Omit<properties, 'id'> }
-              );
+            );
 
             let tmpUpdDiff: { [key: string]: any } = {};
-            
-            console.log("newSheetData");
-            console.log(newSheetData);
+
+            //console.log("newSheetData");
+            //console.log(newSheetData);
 
             setSheetData(newSheetData);
 
@@ -276,21 +426,28 @@ export default function UploadListing() {
             {
                 isLoading ? (
                     <Spin />
-                ) : isCanCompare ? (
+                ) : (
                     <Suspense fallback={<div>loading...</div>}>
-                        <UploadSheetTable properties={Object.values(sheetData)} caption="New" updateDiff={null} />
+                        {!isDataValid ? (
+                            <div>
+                                <span>The worksheet contains 1 or more invalid data. Please fix all the issues below and re-upload the worksheet.</span>
+                                <pre className="bg-gray-100">{JSON.stringify(invalidData, null, 2)}</pre>
+                            </div>
+                        ) : isCanCompare ? (
+                            <UpdateSheetAntTable properties={Object.values(sheetData)} caption="new" />
+                        ) : isCanCommit ? (
+                            <div>
+                                <span className="text-sm">* Please cross-check the data before committing the changes to the database.</span>
+                                <GenerateDiffTables
+                                    newProperties={newListing.sort((a, b) => parseInt(a.id.slice(2)) - parseInt(b.id.slice(2)))}
+                                    updateProperties={updListing.sort((a, b) => parseInt(a.id.slice(2)) - parseInt(b.id.slice(2)))}
+                                    closeProperties={closeListing.sort((a, b) => parseInt(a.id.slice(2)) - parseInt(b.id.slice(2)))}
+                                    updateDiff={updateDiff}
+                                />
+                            </div>
+                        ) : null}
                     </Suspense>
-                ) : isCanCommit ? (
-                    <Suspense fallback={<div>loading...</div>}>
-                        <span className="text-sm">* please cross-check the data before commit the changes to database.</span>
-                        <GenerateDiffTables
-                            newProperties={newListing.sort((a, b) => parseInt(a.id.slice(2)) - parseInt(b.id.slice(2)))}
-                            updateProperties={updListing.sort((a, b) => parseInt(a.id.slice(2)) - parseInt(b.id.slice(2)))}
-                            closeProperties={closeListing.sort((a, b) => parseInt(a.id.slice(2)) - parseInt(b.id.slice(2)))}
-                            updateDiff={updateDiff}
-                        />
-                    </Suspense>
-                ) : null
+                )
             }
 
         </div>

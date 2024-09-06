@@ -24,8 +24,27 @@ model properties {
 	  tenure          String
     extra_info      String?
 	  image_url       String?
+    createdByWs     String?       
     createdAt       DateTime    @default(now())
     updatedAt       DateTime?
+}
+
+model properties_staging {
+    id              String         @id
+    title           String
+    auction_date    DateTime
+	  city            String
+	  address         String
+	  reserve_price   Float
+    estimate_price  Float?
+	  size            Float       @map("property_size")
+	  type            String      @map("property_type")
+	  tenure          String
+    extra_info      String?
+	  image_url       String?
+    createdByWs     String?
+    createdAt       DateTime    @default(now())
+    action          String
 }
 
 //npx prisma db push

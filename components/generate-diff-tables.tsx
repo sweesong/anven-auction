@@ -2,8 +2,9 @@
 
 import { Tabs, Tab } from "@nextui-org/tabs";
 import { FilePlusIcon, PencilIcon, Trash2Icon } from "lucide-react";
-import UploadSheetTable from "./upload-sheet-table";
+//import UploadSheetTable from "./upload-sheet-table";
 import { properties } from "@/lib/types";
+import UpdateSheetAntTable from "./upload-sheet-ant-table";
 
 interface PropertyTableProps {
     newProperties: properties[];
@@ -36,7 +37,8 @@ export default function GenerateDiffTables({ newProperties, updateProperties, cl
                           <span>New Listing ({newProperties.length})</span>
                         </div>
                       }>
-                        <UploadSheetTable properties={newProperties} caption="new" />
+                        {/* <UploadSheetTable properties={newProperties} caption="new" /> */}
+                        <UpdateSheetAntTable properties={newProperties} caption="new" />
                 </Tab>
                 <Tab 
                     key="update" 
@@ -46,7 +48,8 @@ export default function GenerateDiffTables({ newProperties, updateProperties, cl
                           <span>Update Listing ({updateProperties.length})</span>
                         </div>
                       }>
-                    <UploadSheetTable properties={updateProperties} caption="update" updateDiff={updateDiff}/>
+                    {/* <UploadSheetTable properties={updateProperties} caption="update" updateDiff={updateDiff}/> */}
+                    <UpdateSheetAntTable properties={Object.values(updateProperties)} caption="update" updateDiff={updateDiff}/>
                 </Tab>
                 <Tab 
                     key="close" 
@@ -56,7 +59,8 @@ export default function GenerateDiffTables({ newProperties, updateProperties, cl
                           <span>Close Listing ({closeProperties.length})</span>
                         </div>
                       }>
-                    <UploadSheetTable properties={closeProperties} caption="close"/>
+                   {/*  <UploadSheetTable properties={closeProperties} caption="close"/> */}
+                    <UpdateSheetAntTable properties={closeProperties} caption="close" />
                 </Tab>
             </Tabs>
         </section>

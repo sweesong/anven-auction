@@ -44,15 +44,15 @@ export default function UploadFile({ onUploadSuccess }: UploadFileProps) {
     };
 
     const handleBefore: UploadProps['beforeUpload'] = (file) => {
+        //console.log("file"+ file.name);
         const isXLSX = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
         if (!isXLSX) {
-        message.error(`${file.name} is not a XLSX file`);
+            message.error(`${file.name} is not a XLSX file`);
         }
         return isXLSX || Upload.LIST_IGNORE;
     }
 
     const props: UploadProps = {
-        action: (file) => `/0191ba6b-7443-75f3-8c5c-da766df93c5e/api/upload?filename=${file.name}`, // Update to your Vercel API route
         onChange: handleChange,
         beforeUpload: handleBefore,
         multiple: false, // Only allow single file upload

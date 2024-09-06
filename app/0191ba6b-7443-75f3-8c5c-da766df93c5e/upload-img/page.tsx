@@ -1,86 +1,67 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import UploadFile from '@/components/uploadfile';
-import { Spinner } from '@nextui-org/spinner';
-import MenuDashboard from '@/components/menu-dashboard';
-import { ScrollArea } from '@/components/scrollarea';
-import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableFooter,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/components/table';
+import React, { useState } from 'react';
+import { PlusOutlined } from '@ant-design/icons';
+import { Image, Upload } from 'antd';
+import type { GetProp, UploadFile, UploadProps } from 'antd';
 
-const fetchFileList = async () => {
-    const response = await fetch('/0191ba6b-7443-75f3-8c5c-da766df93c5e/api/filelist');
-    if (!response.ok) {
-        throw new Error('Failed to fetch uploaded file list');
+type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
+
+const getBase64 = (file: FileType): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
+  });
+
+export default function UploadImages(){
+    const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState('');
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+
+  const handlePreview = async (file: UploadFile) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj as FileType);
     }
-    return response.json();
-};
 
-export default function UploadPage() {
-    const [filelist, setFileList] = useState<any>([]);
-    const [loading, setLoading] = useState<boolean>(true);
+    setPreviewImage(file.url || (file.preview as string));
+    setPreviewOpen(true);
+  };
 
-    const refreshData = async () => {
-        setLoading(true);
-        try {
-            const updatedFileList = await fetchFileList();
-            setFileList(updatedFileList);
-        } catch (error) {
-            console.error(error);
-            setFileList([]);
-        }
-        setLoading(false);
-    };
+  const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) =>
+    setFileList(newFileList);
 
-    useEffect(() => {
-        refreshData();
-    }, []);
-
-
-    return (
-        <section className='flex flex-col gap-5'>
-            <MenuDashboard menu="upload" />
-            <div className='flex flex-col gap-4'>
-                <div className='flex flex-row gap-2 items-center'>
-                <UploadFile onUploadSuccess={refreshData} />
-                </div>
-                <div className='flex flex-col'>
-                    {
-                    loading ? <Spinner /> :
-                        <ScrollArea className="h-[400px] rounded-md border">
-                        <Table className="sticky top-0">
-                            <TableCaption><span className="font-bold text-xs pt-5">end of your auction listing file</span></TableCaption>
-                            <TableHeader>
-                                <TableRow key="colheader">
-                                    <TableHead className='w-[10px]' key="no.">No.</TableHead>
-                                    <TableHead key="filename">File Name</TableHead>
-                                    <TableCell>Size (Kb)</TableCell>
-                                    <TableHead key="uploadedat">Uploaded At</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {filelist.map((file: any, key: any) => (
-                                    <TableRow className="text-xs" key={key}>
-                                    <TableCell>{key+1}</TableCell>
-                                    <TableCell>{file.Key}</TableCell>
-                                    <TableCell>{Math.ceil(file.Size/1024)}</TableCell>
-                                    <TableCell>{new Date(file.LastModified).toLocaleDateString() + " "+ new Date(file.LastModified).toLocaleTimeString()}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                        </ScrollArea>
-                    }
-                </div>
-            </div>
-        </section>
-    );
+  const uploadButton = (
+    <button style={{ border: 0, background: 'none' }} type="button">
+      <PlusOutlined />
+      <div style={{ marginTop: 10 }}>Upload</div>
+    </button>
+  );
+  return (
+    <div className="flex flex-col gap-4">
+     <span className="text-2xl">Upload Image</span>
+      <Upload
+        action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
+        listType="picture-card"
+        fileList={fileList}
+        onPreview={handlePreview}
+        onChange={handleChange}
+        multiple
+      >
+        {fileList.length >= 50 ? null : uploadButton}
+      </Upload>
+      {previewImage && (
+        <Image
+          wrapperStyle={{ display: 'none' }}
+          preview={{
+            visible: previewOpen,
+            onVisibleChange: (visible) => setPreviewOpen(visible),
+            afterOpenChange: (visible) => !visible && setPreviewImage(''),
+          }}
+          src={previewImage}
+        />
+      )}
+    </div>
+  );
 }
