@@ -271,6 +271,7 @@ export default function UploadListing() {
                         setSheetData(null);
                         setCanCompare(false);
                         setCanCommit(false);
+                        message.error("worksheet consist of invalid data. please fix it.")
                     } else {
                         setSheetData(retProperties);
                         setCanCompare(true);
@@ -374,7 +375,6 @@ export default function UploadListing() {
 
             setCanCompare(false);
             setCanCommit(true);
-            message.success('Successfully generate the different between worksheet and database.');
         } catch (error) {
             setCanCompare(true);
             setCanCommit(false);
@@ -436,8 +436,8 @@ export default function UploadListing() {
                         ) : isCanCompare ? (
                             <UpdateSheetAntTable properties={Object.values(sheetData)} caption="new" />
                         ) : isCanCommit ? (
-                            <div>
-                                <span className="text-sm">* Please cross-check the data before committing the changes to the database.</span>
+                            <div className="flex flex-col gap-2">
+                                <span className="text-sm">* Please cross-check the changes before committing to the system. You may hover the <span className="text-red-500">red text</span> to view the existing data for comparison purpose.</span>
                                 <GenerateDiffTables
                                     newProperties={newListing.sort((a, b) => parseInt(a.id.slice(2)) - parseInt(b.id.slice(2)))}
                                     updateProperties={updListing.sort((a, b) => parseInt(a.id.slice(2)) - parseInt(b.id.slice(2)))}

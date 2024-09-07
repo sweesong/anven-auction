@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { Image, Upload } from 'antd';
 import type { GetProp, UploadFile, UploadProps } from 'antd';
+import ImageList from '@/components/image-list';
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
@@ -42,7 +43,7 @@ export default function UploadImages(){
     <div className="flex flex-col gap-4">
      <span className="text-2xl">Upload Image</span>
       <Upload
-        action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
+        action="/0191ba6b-7443-75f3-8c5c-da766df93c5e/api/upload-img"
         listType="picture-card"
         fileList={fileList}
         onPreview={handlePreview}
@@ -62,6 +63,8 @@ export default function UploadImages(){
           src={previewImage}
         />
       )}
+
+    <ImageList />
     </div>
   );
 }
