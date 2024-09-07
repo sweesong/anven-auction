@@ -47,6 +47,10 @@ model properties_staging {
     action          String
 }
 
+model user {
+  email              String         @id
+}
+
 //npx prisma db push
 //npx prisma generate
 //npx prisma studio

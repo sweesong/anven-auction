@@ -8,6 +8,7 @@ import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
 import { Navbar } from "@/components/navbar";
 import { Spacer } from "@nextui-org/spacer";
+import AuthProvider from "@/lib/serviceprovider";
 
 export const metadata: Metadata = {
   title: {
@@ -41,11 +42,13 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
-          <div className="flex flex-col h-screen pt-4">
-            {children}
-          </div>
-        </Providers>
+        <AuthProvider>
+          <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
+            <div className="flex flex-col h-screen pt-4">
+              {children}
+            </div>
+          </Providers>
+        </AuthProvider>
       </body>
     </html>
   );

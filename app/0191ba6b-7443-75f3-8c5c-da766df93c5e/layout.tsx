@@ -1,11 +1,11 @@
-import NavBarDashboard from "@/components/navbar-dashboard";
+import NavBarDashboardWrapper from "@/components/navbar-dashboard-wrapper";
 import { Spacer } from "@nextui-org/spacer";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
 
     return (
         <>
-            <NavBarDashboard />
+            <NavBarDashboardWrapper />
             <main className="flex flex-col gap-4 container mx-auto max-w-[1140px] pt-4 px-6 flex-grow">
                 {children}
             </main>

@@ -9,6 +9,8 @@ import { GitCompareIcon, SaveAllIcon } from "lucide-react";
 //import UploadSheetTable from "@/components/upload-sheet-table";
 import GenerateDiffTables from "@/components/generate-diff-tables";
 import UpdateSheetAntTable from "@/components/upload-sheet-ant-table";
+import { signOut } from "next-auth/react";
+import WithAuth from "@/components/withauth";
 
 
 type ValidationErrors = {
@@ -118,7 +120,7 @@ function deepDiff(newObj: any, oldObj: any): any {
     return Object.keys(diff).length > 0 ? diff : null;
 }
 
-export default function UploadListing() {
+const UploadListing = () => {
     const [uploadFilename, setUploadFilename] = useState<string>();
 
     const [sheetData, setSheetData] = useState<any>(); //from spreadsheet
@@ -449,7 +451,8 @@ export default function UploadListing() {
                     </Suspense>
                 )
             }
-
         </div>
     );
 }
+
+export default WithAuth(UploadListing);

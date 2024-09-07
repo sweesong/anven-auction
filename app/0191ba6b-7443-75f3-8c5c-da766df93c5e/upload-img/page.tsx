@@ -5,6 +5,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Image, Upload } from 'antd';
 import type { GetProp, UploadFile, UploadProps } from 'antd';
 import ImageList from '@/components/image-list';
+import WithAuth from '@/components/withauth';
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
@@ -16,7 +17,7 @@ const getBase64 = (file: FileType): Promise<string> =>
     reader.onerror = (error) => reject(error);
   });
 
-export default function UploadImages(){
+const UploadImages = () => {
     const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
   const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -68,3 +69,5 @@ export default function UploadImages(){
     </div>
   );
 }
+
+export default WithAuth(UploadImages);
