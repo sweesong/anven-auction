@@ -132,7 +132,7 @@ export default function UploadListing() {
     const [isLoading, setLoading] = useState(false);
     const [isCanCompare, setCanCompare] = useState(false);
     const [isCanCommit, setCanCommit] = useState(false);
-    const [isDataValid, setDataValid] = useState(false);
+    const [isDataValid, setDataValid] = useState(true);
 
 
     const handleFileRead = (file: File) => {
