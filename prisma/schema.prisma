@@ -24,8 +24,10 @@ model properties {
 	  tenure          String
     extra_info      String?
 	  image_url       String?
+    isexpired       Boolean     @default(false)
     createdByWs     String?       
     createdAt       DateTime    @default(now())
+    updatedByWs     String? 
     updatedAt       DateTime?
 }
 
@@ -43,7 +45,6 @@ model properties_staging {
     extra_info      String?
 	  image_url       String?
     createdByWs     String?
-    createdAt       DateTime    @default(now())
     action          String
 }
 

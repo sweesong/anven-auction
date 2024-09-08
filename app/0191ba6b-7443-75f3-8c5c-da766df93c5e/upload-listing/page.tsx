@@ -2,7 +2,7 @@
 
 import { properties, propertiesColumns, xlsxProperties } from "@/lib/types";
 import { Suspense, useState } from 'react';
-import { Button, message, Popconfirm, Upload, Spin } from 'antd';
+import { Button, message, Popconfirm, Upload, Spin, Result } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import * as XLSX from 'xlsx';
 import { GitCompareIcon, SaveAllIcon } from "lucide-react";
@@ -11,6 +11,7 @@ import GenerateDiffTables from "@/components/generate-diff-tables";
 import UpdateSheetAntTable from "@/components/upload-sheet-ant-table";
 import { signOut } from "next-auth/react";
 import WithAuth from "@/components/withauth";
+import { parseDate } from "@/lib/utils";
 
 
 type ValidationErrors = {
@@ -135,6 +136,11 @@ const UploadListing = () => {
     const [isCanCompare, setCanCompare] = useState(false);
     const [isCanCommit, setCanCommit] = useState(false);
     const [isDataValid, setDataValid] = useState(true);
+    const [isSuccessCommit, setSuccessCommit] = useState(false);
+    const [isErrorCommit, setErrorCommit] = useState(false);
+    const [isNoDiff, setNoDiff] = useState(false);
+
+    const [isPopConfirmVisible, setIsPopConfirmVisible] = useState(false);
 
 
     const handleFileRead = (file: File) => {
@@ -143,6 +149,9 @@ const UploadListing = () => {
             setLoading(true); // Start loading
             setCanCompare(false);
             setCanCommit(false);
+            setSuccessCommit(false);
+            setErrorCommit(false);
+            setNoDiff(false);
 
             const reader = new FileReader();
             reader.readAsArrayBuffer(file); // Read file as binary string
@@ -178,8 +187,6 @@ const UploadListing = () => {
                                 thirdRowCells.push(null); // Or use an empty string if preferred
                             }
                         }
-
-                        console.log(thirdRowCells);
 
                         // Check if the 3rd row headers match the expected headers
                         validHeaderFormat = thirdRowCells.every((value, index) => value?.toLowerCase() === expectedHeaders[index].toLowerCase());
@@ -374,9 +381,15 @@ const UploadListing = () => {
             //console.log(updateData);
             //console.log("closeData");
             //console.log(closeData);
-
-            setCanCompare(false);
-            setCanCommit(true);
+            if(Object.keys(tmpUpdDiff).length>0){
+                setCanCompare(false);
+                setCanCommit(true);
+                setNoDiff(false);
+            }else{
+                setCanCompare(false);
+                setCanCommit(false);
+                setNoDiff(true);
+            }
         } catch (error) {
             setCanCompare(true);
             setCanCommit(false);
@@ -386,18 +399,72 @@ const UploadListing = () => {
         }
     };
 
-    const confirm = (e: any) => {
-        console.log(e);
-        message.success('Click on Yes');
-    };
-    const cancel = (e: any) => {
-        console.log(e);
-        message.error('Click on No');
+    const mergeListings = () => {
+        // Add a common 'action' property for each listing based on its type
+        const newListings = newListing.map(item => ({ ...item, action: 'insert', createdByWs: uploadFilename }));
+        const updatedListings = updListing.map(item => ({ ...item, action: 'update', createdByWs: uploadFilename }));
+        const closedListings = closeListing.map(item => ({ ...item, action: 'delete', createdByWs: uploadFilename }));
+    
+        return [...newListings, ...updatedListings, ...closedListings];
     };
 
-    //console.log("updateDiff");
-    //console.log(sheetData);
+    const handleCommit = async () => {
+        setLoading(true);
+        setCanCommit(false);
+        setIsPopConfirmVisible(false);
 
+        try {
+            const mergedListings = mergeListings();
+
+            const mergedListingsWithoutIndicator = mergedListings.map(listing => {
+                const { indicator, auction_date, ...rest } = listing; // Destructure to remove indicator
+                return {
+                    ...rest,
+                    auction_date: auction_date ? parseDate(auction_date) : null, // Convert auction_date to Date
+                };
+            });
+            
+            
+             const response = await fetch('/0191ba6b-7443-75f3-8c5c-da766df93c5e/api/upload-listing', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(mergedListingsWithoutIndicator),
+            });
+    
+            if (response.ok) {
+                const ret = await response.json();
+
+                if(ret.success==1){
+                    //successfully load
+                    setSuccessCommit(true);
+                    setErrorCommit(false);
+                }else{
+                    //have error
+                    setSuccessCommit(false);
+                    setErrorCommit(true);
+                }
+            } else {
+                throw new Error('Failed to commit data');
+            }
+        } catch (error) {
+            //message.error('Error committing data: ' + error);
+            //have error
+            setSuccessCommit(false);
+            setErrorCommit(true);
+        } finally {
+            setUploadFilename("");
+            setSheetData(null);
+            setLoading(false);
+        }
+    };
+
+    const handleConfirm = () => {
+        // Close the Popconfirm first, then trigger the commit
+        handleCommit();
+    };
+    
     return (
         <div className="flex flex-col gap-4">
             <span className="text-2xl">Upload Listing</span>
@@ -409,11 +476,13 @@ const UploadListing = () => {
                 <Popconfirm
                     title="Commit Data"
                     description="Are you sure to commit the data to database (cannot be reversed)?"
-                    onConfirm={confirm}
+                    onConfirm={handleConfirm}
+                    onCancel={() => setIsPopConfirmVisible(false)}
                     okText="Yes"
                     cancelText="No"
+                    onOpenChange={setIsPopConfirmVisible}  // Manages visibility state
                 >
-                    <Button type="primary" disabled={isLoading || !isCanCommit} icon={<SaveAllIcon />}>Commit Change</Button>
+                    <Button type="primary" onClick={() => setIsPopConfirmVisible(true)} disabled={isLoading || !isCanCommit} icon={<SaveAllIcon />}>Commit Change</Button>
                 </Popconfirm>
             </div>
             {
@@ -427,32 +496,53 @@ const UploadListing = () => {
 
             {
                 isLoading ? (
-                    <Spin />
+                    <Spin tip="Loading" size="large" />
                 ) : (
+                    <Spin size="large" spinning={isLoading}>
                     <Suspense fallback={<div>loading...</div>}>
-                        {!isDataValid ? (
-                            <div>
-                                <span>The worksheet contains 1 or more invalid data. Please fix all the issues below and re-upload the worksheet.</span>
-                                <pre className="bg-gray-100">{JSON.stringify(invalidData, null, 2)}</pre>
-                            </div>
-                        ) : isCanCompare ? (
-                            <UpdateSheetAntTable properties={Object.values(sheetData)} caption="new" />
-                        ) : isCanCommit ? (
-                            <div className="flex flex-col gap-2">
-                                <span className="text-sm">* Please cross-check the changes before committing to the system. You may hover the <span className="text-red-500">red text</span> to view the existing data for comparison purpose.</span>
-                                <GenerateDiffTables
-                                    newProperties={newListing.sort((a, b) => parseInt(a.id.slice(2)) - parseInt(b.id.slice(2)))}
-                                    updateProperties={updListing.sort((a, b) => parseInt(a.id.slice(2)) - parseInt(b.id.slice(2)))}
-                                    closeProperties={closeListing.sort((a, b) => parseInt(a.id.slice(2)) - parseInt(b.id.slice(2)))}
-                                    updateDiff={updateDiff}
+                        {
+                            !isDataValid ? (
+                                <div>
+                                    <span>The worksheet contains 1 or more invalid data. Please fix all the issues below and re-upload the worksheet.</span>
+                                    <pre className="bg-gray-100">{JSON.stringify(invalidData, null, 2)}</pre>
+                                </div>
+                            ) : isCanCompare ? (
+                                <UpdateSheetAntTable properties={Object.values(sheetData)} caption="new" />
+                            ) : isCanCommit ? (
+                                <div className="flex flex-col gap-2">
+                                    <span className="text-sm">* Please cross-check the changes before committing to the system. You may hover the <span className="text-red-500">red text</span> to view the existing data for comparison purpose.</span>
+                                    <GenerateDiffTables
+                                        newProperties={newListing.sort((a, b) => parseInt(a.id.slice(2)) - parseInt(b.id.slice(2)))}
+                                        updateProperties={updListing.sort((a, b) => parseInt(a.id.slice(2)) - parseInt(b.id.slice(2)))}
+                                        closeProperties={closeListing.sort((a, b) => parseInt(a.id.slice(2)) - parseInt(b.id.slice(2)))}
+                                        updateDiff={updateDiff}
+                                    />
+                                </div>
+                            ) : isSuccessCommit ? (
+                                <Result
+                                    status="success"
+                                    title="Successfully commit the changes to database."
+                                    subTitle="You may re-upload the same file to confirm. It should not generate any different by now."
                                 />
-                            </div>
-                        ) : null}
+                            ) : isErrorCommit ? (
+                                <Result
+                                    status="warning"
+                                    title="There are some problem with the commit."
+                                    subTitle="Please try again. Contact Admin if the issue persists."
+                                />
+                            ) : isNoDiff ? (
+                                <Result
+                                    status="info"
+                                    title="No different found by comparing the worksheet and database."
+                                />
+                            ) : null
+                        }
                     </Suspense>
+                    </Spin>
                 )
             }
         </div>
     );
 }
 
-export default WithAuth(UploadListing);
+export default UploadListing;
