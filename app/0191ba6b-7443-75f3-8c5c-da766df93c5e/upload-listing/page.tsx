@@ -545,4 +545,4 @@ const UploadListing = () => {
     );
 }
 
-export default UploadListing;
+export default WithAuth(UploadListing);
