@@ -74,7 +74,7 @@ export async function POST(req: Request): Promise<NextResponse> {
                         },
                     });
                 } else if (action.action === 'update') {
-
+                    /*
                     console.log("UPDATE" )
 
                     await prisma.properties.update({
@@ -96,6 +96,7 @@ export async function POST(req: Request): Promise<NextResponse> {
                             updatedByWs: action.createdByWs,
                         },
                     });
+                    */
                 }  else if (action.action === 'delete') {
 
                     console.log("DELETE" )
