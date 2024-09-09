@@ -98,7 +98,7 @@ const main = async () => {
         size: !isNaN(parseFloat(getCellValue(row, 7))) ? parseFloat(getCellValue(row, 7)) : 0,
         type: getCellValue(row, 8),
         tenure: getCellValue(row, 9),
-        image_url: 'placeholder.png',
+        image_url: 'placeholder.webp',
         createdByWs: 'initial from seed'
       };
     });

@@ -58,7 +58,7 @@ export function PropertyCardGrid(property: PropertyCardProps) {
                 alt={"image:#" + property.id.toString()}
                 className="z-0 w-full h-60 object-cover"
                 src={getPropertyImageLink(property.id)}
-                fallback="placeholder.png"
+                fallback="placeholder.webp"
                 width="100%"
             />
             <CardBody>
@@ -142,7 +142,7 @@ export function PropertyCardList(property: PropertyCardProps) {
                                 className="z-0 object-cover md:max-h-[200px]"
                                 width="100%"
                                 src={getPropertyImageLink(property.id)}
-                                fallback="placeholder.png"
+                                fallback="placeholder.webp"
                             />
                         </div>
                     </div>
