@@ -5,6 +5,7 @@ const prisma = new PrismaClient();
 
 export async function POST(req: Request): Promise<NextResponse> {
     try {
+        console.log("POST")
         // Parse the JSON body
         const listings: Array<{
             id: string;
@@ -23,13 +24,22 @@ export async function POST(req: Request): Promise<NextResponse> {
             action: 'insert' | 'update' | 'delete';
         }> = await req.json();
 
+        console.log(listings)
+
         if (listings) {
+
+            console.log("DELETING")
+
             await prisma.properties_staging.deleteMany();
+
+            console.log("CREATING INTO STAGING")
 
             await prisma.properties_staging.createMany({
                 data: listings,
                 skipDuplicates: true, 
             });
+
+            console.log("RETRIEVE FROM STAGING")
 
             const actions = await prisma.properties_staging.findMany({
                 where: {
@@ -39,8 +49,12 @@ export async function POST(req: Request): Promise<NextResponse> {
                 }
             });
 
+            console.log("ACTION:" + actions.length)
+
             for (const action of actions) {
                 if (action.action === 'insert') {
+                    console.log("ACTION NEW" )
+
                     await prisma.properties.create({
                         data: {
                             id: action.id,
@@ -60,6 +74,9 @@ export async function POST(req: Request): Promise<NextResponse> {
                         },
                     });
                 } else if (action.action === 'update') {
+
+                    console.log("UPDATE" )
+
                     await prisma.properties.update({
                         where: { id: action.id },
                         data: {
@@ -80,6 +97,9 @@ export async function POST(req: Request): Promise<NextResponse> {
                         },
                     });
                 }  else if (action.action === 'delete') {
+
+                    console.log("DELETE" )
+
                     await prisma.properties.update({
                         where: { id: action.id },
                         data: {
@@ -88,6 +108,8 @@ export async function POST(req: Request): Promise<NextResponse> {
                     });
                 }
             }
+
+            console.log("DONE" )
             
             // Return success response
             return NextResponse.json({ success: 1});
@@ -95,9 +117,11 @@ export async function POST(req: Request): Promise<NextResponse> {
 
         // Return response if no listings are provided
         //, message: 'No data provided'
+        console.log("NO DATA" )
         return NextResponse.json({ success: -1 });
 
     } catch (error) {
+        console.log("ERROR:" + error);
         // Return error response
         return NextResponse.json({ success: 0 });
     }
