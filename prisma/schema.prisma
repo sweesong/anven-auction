@@ -57,6 +57,7 @@ model current_listing {
     ipro            Boolean      @default(false)
     ep              Boolean      @default(false)
     pg              String?
+    is_publish      Boolean      @default(false)
     createdAt       DateTime     @default(now())
     updatedAt       DateTime?  
 }

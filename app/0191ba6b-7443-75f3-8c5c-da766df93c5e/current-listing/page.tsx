@@ -147,11 +147,15 @@ const columns: ColumnsType<Listing> = [
 function filterExpiredListing(data : any){
     //get only today and before listing
     const today = new Date();
-    
+    today.setHours(0, 0, 0, 0);
+
     const filteredData = data.filter((item: { auction_date: string; }) => {
         if (item.auction_date) {
             const auctionDate = parseDate(item.auction_date);
-            return auctionDate && auctionDate.toDateString() == today.toDateString();
+            
+            auctionDate.setHours(0, 0, 0, 0);
+
+            return auctionDate && auctionDate <= today;
         }
         return false;
     });
