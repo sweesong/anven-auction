@@ -57,6 +57,7 @@ const columns: ColumnsType<Listing> = [
         key: 'id',
         width: "80px",
         fixed: 'left',
+        sorter: (a, b) => a.id - b.id,
     },
     {
         title: 'Auction Date',
@@ -88,10 +89,6 @@ const columns: ColumnsType<Listing> = [
         dataIndex: 'priority',
         key: 'priority',
         width: "100px",
-        sorter: (a, b) => {
-            const priorityOrder: any = { 'Urgent': 1, 'High': 2, 'Medium': 3, 4: 'Normal' };
-            return priorityOrder[a.priority] - priorityOrder[b.priority];
-        },
         render: (priority) => {
             switch (priority) {
                 case 1:
@@ -217,7 +214,7 @@ const CurrentListing = () => {
 
     const handleRefreshListing = () => {
         fetchData();
-        applyFilters();
+        resetToggleState();
     }
 
     const applyFilters = () => {
@@ -367,18 +364,7 @@ const CurrentListing = () => {
         setIsDatePickerVisible(false); // Hide date picker after selection
     };
 
-    const handleResetFilter = () => {
-
-        // Filter data to include only those where auction_date <= today
-        const today = new Date();
-        const filteredData = fullListing?.filter(item => {
-            if (item.auction_date) {
-                const auctionDate = parseDate(item.auction_date);
-                return auctionDate && auctionDate <= today;
-            }
-            return false;
-        });
-
+    const resetToggleState = () => {
         setFilteredData(filteredData); // Reset to expired list
         setIsUrgentToggle(false);
         setIsHighToggle(false);
@@ -387,6 +373,11 @@ const CurrentListing = () => {
         setIsExpiredToggle(true);
         setIsNonExpiredToggle(false);
         setSelectedDate(null);
+    }
+
+    const handleResetFilter = () => {
+        const filteredData = filterExpiredListing(fullListing);
+        resetToggleState();
     };
 
     // Handle search input change
