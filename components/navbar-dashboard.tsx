@@ -32,16 +32,16 @@ export default function NavBarDashboard({ session } : NavBarDashboardProps) {
                     {
                         session ? (
                             <ul className="hidden md:flex gap-4 justify-start ml-2">
-                                <NavbarItem key="upload-listing">
+                                <NavbarItem key="current-listing">
                                     <NextLink
                                         className={clsx(
                                             linkStyles({ color: "foreground" }),
                                             "data-[active=true]:text-primary data-[active=true]:font-medium",
                                         )}
                                         color="foreground"
-                                        href="/0191ba6b-7443-75f3-8c5c-da766df93c5e/upload-listing"
+                                        href="/0191ba6b-7443-75f3-8c5c-da766df93c5e/current-listing"
                                     >
-                                        Upload Listing
+                                        Current Listing
                                     </NextLink>
                                 </NavbarItem>
                                 <NavbarItem key="upload-img">

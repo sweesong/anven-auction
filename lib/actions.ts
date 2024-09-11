@@ -153,9 +153,7 @@ export async function fetchProperties(
 }
 
 export async function fetchAllProperties(){
-  
-  delay(5000);
-  
+
   const [totalProperties, tmpProperties] = await Promise.all([
     prisma.properties.count(),
     prisma.properties.findMany({
@@ -190,6 +188,44 @@ fetchAllProperties().catch(e => console.error(e)).finally(async () => {
   console.log("disconnect")
   await prisma.$disconnect();
 });
+
+
+export async function fetchCurrentListing(){
+
+  const [totalListing, tmpListings] = await Promise.all([
+    prisma.current_listing.count(),
+    prisma.current_listing.findMany({
+      select: {
+        id: true,
+        auction_date: true,
+        unitno: true,
+        address: true,
+        city: true, 
+        priority: true,
+      },
+      orderBy: [
+        { auction_date: { sort: 'desc', nulls: 'last' }},
+        { id: 'desc' },
+      ]
+    }),
+  ]);
+
+  const listings = tmpListings.map(listing => ({
+    ...listing,
+    auction_date: listing.auction_date? format(listing.auction_date, 'dd-MM-yyyy') : null,
+  })); 
+
+  return {
+    totalListing,
+    listings,
+  };
+}
+
+fetchCurrentListing().catch(e => console.error(e)).finally(async () => {
+  console.log("disconnect")
+  await prisma.$disconnect();
+});
+
 
 
 export default prisma;

@@ -79,6 +79,16 @@ export const formatDateToStr = (rawDate: Date): string => {
   return formattedDate;
 };
 
+export const formatDateToStr2 = (rawDate: Date): string => {
+  const day = ('0' + rawDate.getDate()).slice(-2);
+  const month = ('0' + (rawDate.getMonth() + 1)).slice(-2);
+  const year = rawDate.getFullYear();
+
+  const formattedDate = `${day}-${month}-${year}`;
+
+  return formattedDate;
+};
+
 export function parseDate(dateString: string) {
   const [day, month, year] = dateString.toString().split('-');
   return new Date(`${year}-${month}-${day}`);

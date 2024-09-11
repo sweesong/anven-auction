@@ -18,7 +18,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (sessionStatus === "authenticated") {
-      router.replace("/0191ba6b-7443-75f3-8c5c-da766df93c5e/upload-listing");
+      router.replace("/0191ba6b-7443-75f3-8c5c-da766df93c5e/current-listing");
     }
   }, [sessionStatus, router]);
 
