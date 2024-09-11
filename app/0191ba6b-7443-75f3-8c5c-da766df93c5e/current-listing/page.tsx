@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import { Table, Input, Dropdown, Menu, Button, Space, MenuProps, message, Popover, DatePicker } from 'antd';
-import { Tabs, Tab } from "@nextui-org/tabs";
 import type { ColumnsType } from 'antd/es/table';
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import { CalendarIcon, CircleIcon, RefreshCwIcon, ShieldAlertIcon, TriangleAlertIcon, TriangleIcon, Undo } from 'lucide-react';
@@ -145,6 +144,21 @@ const columns: ColumnsType<Listing> = [
     }
 ];
 
+function filterExpiredListing(data : any){
+    //get only today and before listing
+    const today = new Date();
+    
+    const filteredData = data.filter((item: { auction_date: string; }) => {
+        if (item.auction_date) {
+            const auctionDate = parseDate(item.auction_date);
+            return auctionDate && auctionDate.toDateString() == today.toDateString();
+        }
+        return false;
+    });
+
+    return filteredData;
+}
+
 
 const CurrentListing = () => {
 
@@ -178,15 +192,7 @@ const CurrentListing = () => {
             const response = await fetch('/0191ba6b-7443-75f3-8c5c-da766df93c5e/api/get-current-listing');
             const data: Listing[] = await response.json();
 
-            // Filter data to include only those where auction_date <= today
-            const today = new Date();
-            const filteredData = data.filter(item => {
-                if (item.auction_date) {
-                    const auctionDate = parseDate(item.auction_date);
-                    return auctionDate && auctionDate <= today;
-                }
-                return false;
-            });
+            const filteredData = filterExpiredListing(data);
 
             setFullListing(data);
             setFilteredData(filteredData);
@@ -223,23 +229,13 @@ const CurrentListing = () => {
         }
 
         if (isExpiredToggle && !isNonExpiredToggle) {
-            filtered = filtered?.filter(item => {
-                if (item.auction_date) {
-                    const auctionDate = parseDate(item.auction_date);
-                    return auctionDate && auctionDate <= today;
-                }
-                return false;
-            });
+            if(filtered)
+                filtered = filterExpiredListing(filtered);
         }
 
         if (!isExpiredToggle && isNonExpiredToggle) {
-            filtered = filtered?.filter(item => {
-                if (item.auction_date) {
-                    const auctionDate = parseDate(item.auction_date);
-                    return auctionDate && auctionDate > today;
-                }
-                return false;
-            });
+            if(filtered)
+                filtered = filterExpiredListing(filtered);
         }
 
         if (selectedDate) {

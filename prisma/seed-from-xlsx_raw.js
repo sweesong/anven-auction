@@ -89,7 +89,9 @@ async function extractFromSheetJS(){
 
   const rows = worksheet.getRows(rowStartIndex, numberOfRows) || [];
 
-  //console.log(getCellColor(rows[28],28));
+  //console.log(getCellValue(rows[2],7));
+  //console.log(getCellColor(rows[2],7));
+  //console.log(rows[2].getCell(7).style.fill);
 
   const current_listing = rows
     .filter(row => {
@@ -135,9 +137,23 @@ async function extractFromSheetJS(){
           }
         }
       }
+      let priority=0;
+      const cellColor = getCellColor(row,3);
+      
+      if(cellColor){
+        if(cellColor=="FF00FF00")
+          priority=1;
+        if(cellColor=="FF7030A0")
+          priority=2;
+        else if(cellColor=="FFFF0000")
+          priority=3
+        else if(cellColor=="FFFFFF00")
+          priority=4
+      }
 
       return {
         legacy_id: getCellValue(row, ColumnIdx.ID),
+        priority: priority,
         title: title,
         auction_date: parseDate(extractDate(getCellValue(row, ColumnIdx.AUCTION_DATE))),
         city: getCellValue(row, ColumnIdx.CITY),
