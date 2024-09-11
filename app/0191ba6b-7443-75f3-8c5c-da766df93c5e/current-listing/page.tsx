@@ -212,6 +212,10 @@ const CurrentListing = () => {
         const yesterday = new Date(today);
         yesterday.setDate(yesterday.getDate() - 1);
 
+        if (!isExpiredToggle && !isNonExpiredToggle) {
+            filtered = undefined;
+        }
+
         if (isExpiredToggle && !isNonExpiredToggle) {
             filtered = filtered?.filter(item => {
                 if (item.auction_date) {
