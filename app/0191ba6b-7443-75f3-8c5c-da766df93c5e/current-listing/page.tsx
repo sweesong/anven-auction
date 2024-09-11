@@ -90,7 +90,7 @@ const columns: ColumnsType<Listing> = [
         key: 'priority',
         width: "100px",
         sorter: (a, b) => {
-            const priorityOrder: any = { 'High': 1, 'Medium': 2, 'Normal': 3 };
+            const priorityOrder: any = { 'Urgent': 1, 'High': 2, 'Medium': 3, 4: 'Normal' };
             return priorityOrder[a.priority] - priorityOrder[b.priority];
         },
         render: (priority) => {
@@ -109,8 +109,14 @@ const columns: ColumnsType<Listing> = [
                             High
                         </>
                     );
-                case 0:
                 case 3:
+                    return (
+                        <>
+                            <ArrowDownOutlined style={{ color: 'green', marginRight: 5 }} />
+                            Medium
+                        </>
+                    );
+                case 4:
                     return (
                         <>
                             <ArrowDownOutlined style={{ color: 'green', marginRight: 5 }} />
@@ -118,7 +124,7 @@ const columns: ColumnsType<Listing> = [
                         </>
                     );
                 default:
-                    return 'Unknown';
+                    return 'None';
             }
         },
     },
@@ -246,23 +252,34 @@ const CurrentListing = () => {
             });
         }
 
+        let mergedList: any[] = [];
+        let urgentList = null;
+        let highList = null;
+        let mediumList = null;
+        let normalList = null;
+
         // Apply priority filters
+        let priorityValues: number[] = [];
+
         if (isUrgentToggle) {
-            filtered = filtered?.filter(item => item.priority === 1);
+            priorityValues.push(1); 
         }
 
         if (isHighToggle) {
-            filtered = filtered?.filter(item => item.priority === 2);
+            priorityValues.push(2); 
         }
 
         if (isMediumToggle) {
-            filtered = filtered?.filter(item => item.priority === 3);
+            priorityValues.push(3); 
         }
 
         if (isNormalToggle) {
-            filtered = filtered?.filter(item => item.priority === 4);
+            priorityValues.push(4); 
         }
 
+        if(priorityValues.length>0)
+            filtered = filtered?.filter(item => priorityValues.includes(item.priority));
+        
         setFilteredData(filtered);
         setResultData(filtered);
         resetToFirstPage();
