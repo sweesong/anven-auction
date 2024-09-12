@@ -9,6 +9,7 @@ import { formatDateToStr2, parseDate } from '@/lib/utils';
 import { Button as NextButton } from '@nextui-org/button';
 import WithAuth from "@/components/withauth";
 import dayjs, { Dayjs } from 'dayjs';
+import { Link } from '@nextui-org/link';
 
 // Define the data structure for the table
 interface Listing {
@@ -352,15 +353,16 @@ const CurrentListing = () => {
             fixed: 'left',
             sorter: (a, b) => a.id - b.id,
             render: (id: number, record: Listing) => (
-                    <Tooltip title="click to view details">
-                  <span
-                    onClick={() => handleViewOpen(record)} 
-                    //onMouseEnter={() => handleViewOpen(record)}  // Show modal on hover
-                    //onMouseLeave={handleViewClose}  // Hide modal on mouse leave
-                    style={{ cursor: 'pointer'}}
+                <Tooltip title="click to view details">
+                  <Link 
+                    isBlock
+                    size='sm'
+                    color="foreground"
+                    underline="always"
+                    onClick={() => handleViewOpen(record)}
                   >
-                    [{id}]
-                  </span>
+                    {id}
+                  </Link>
                   </Tooltip>
               ),
         },
