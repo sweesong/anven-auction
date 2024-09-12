@@ -195,14 +195,6 @@ export async function fetchCurrentListing(){
   const [totalListing, tmpListings] = await Promise.all([
     prisma.current_listing.count(),
     prisma.current_listing.findMany({
-      select: {
-        id: true,
-        auction_date: true,
-        unitno: true,
-        address: true,
-        city: true, 
-        priority: true,
-      },
       orderBy: [
         { auction_date: { sort: 'desc', nulls: 'last' }},
         { id: 'desc' },

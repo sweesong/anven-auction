@@ -8,10 +8,12 @@ type Listing = {
     city: string | null,
     unitno: string | null,
     address: string | null,
+    reserve_price: number | null,
+    estimate_price: number | null,
   };
 
 // Extract properties from the database and transform them
-async function extractCurrentListing(): Promise<Listing[]> {
+async function extractCurrentListing(): Promise<any> {
   const { totalListing, listings } = await fetchCurrentListing();
   return listings;
 }
